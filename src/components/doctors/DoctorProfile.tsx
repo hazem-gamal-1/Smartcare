@@ -13,7 +13,6 @@ import {
   Clock,
   Calendar,
   Phone,
-  Mail,
   GraduationCap,
   Award,
   Languages,
