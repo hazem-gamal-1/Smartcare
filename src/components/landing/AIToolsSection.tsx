@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Button } from "../ui/Button";
-import AIToolCard from "../ui/AIToolCard";
+import AIToolCard from "../ai-tools/AIToolCard";
 import { Camera, MessageSquare, FileText, Zap, Sparkles } from "lucide-react";
 
 const AIToolsSection = () => {

@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Button } from "../ui/Button";
-import SpecialtyCard from "../ui/SpecialtyCard";
+import SpecialtyCard from "../Specialties/SpecialtyCard";
 import {
   Heart,
   Brain,

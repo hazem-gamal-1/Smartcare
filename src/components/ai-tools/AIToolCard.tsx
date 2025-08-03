@@ -1,6 +1,6 @@
 import React from "react";
-import { Card, CardContent } from "./Card";
-import { Button } from "./Button";
+import { Card, CardContent } from "../ui/Card";
+import { Button } from "../ui/Button";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 interface AIToolCardProps {

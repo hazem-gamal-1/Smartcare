@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import SpecialtyCard from "../ui/SpecialtyCard";
+import SpecialtyCard from "./SpecialtyCard";
 import {
   Heart,
   Brain,
