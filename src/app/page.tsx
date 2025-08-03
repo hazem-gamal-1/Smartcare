@@ -1,9 +1,7 @@
-import React from 'react'
-
+import React, { useState } from "react";
+import LandingPage from "@/components/landing/LandingPage";
 const page = () => {
-  return (
-    <div>page</div>
-  )
-}
+  return <LandingPage></LandingPage>;
+};
 
-export default page
+export default page;

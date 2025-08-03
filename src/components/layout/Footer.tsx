@@ -1,0 +1,115 @@
+"use client";
+import React from "react";
+import {
+  Stethoscope,
+  Facebook,
+  Twitter,
+  Instagram,
+  Linkedin,
+  Mail,
+  Phone,
+  MapPin,
+} from "lucide-react";
+import { Button } from "../ui/Button";
+
+export default function Footer() {
+  return (
+    <footer className="bg-card border-t">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Brand Section */}
+          <div className="col-span-1 lg:col-span-2">
+            <div className="flex items-center space-x-2 mb-4">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+                <Stethoscope className="h-5 w-5 text-primary-foreground" />
+              </div>
+              <span className="text-xl font-bold font-[Plus_Jakarta_Sans] text-foreground">
+                AI-Clinic
+              </span>
+            </div>
+            <p className="text-muted-foreground mb-6 max-w-md">
+              Revolutionizing healthcare with AI-powered tools and expert
+              medical consultations. Your health, our priority.
+            </p>
+
+            {/* Social Links */}
+            <div className="flex space-x-4">
+              <Button variant="outline" size="sm" className="h-10 w-10 p-0">
+                <Facebook className="h-4 w-4" />
+              </Button>
+              <Button variant="outline" size="sm" className="h-10 w-10 p-0">
+                <Twitter className="h-4 w-4" />
+              </Button>
+              <Button variant="outline" size="sm" className="h-10 w-10 p-0">
+                <Instagram className="h-4 w-4" />
+              </Button>
+              <Button variant="outline" size="sm" className="h-10 w-10 p-0">
+                <Linkedin className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h4 className="font-semibold mb-4">Quick Links</h4>
+            <ul className="space-y-2">
+              {[
+                { label: "Home", id: "home" },
+                { label: "Find Doctors", id: "doctors" },
+                { label: "AI Tools", id: "ai-tools" },
+                { label: "About Us", id: "about" },
+                { label: "Contact", id: "contact" },
+              ].map((link) => (
+                <li key={link.id}>
+                  <button
+                    onClick={() => true}
+                    className="text-muted-foreground hover:text-primary transition-colors text-sm"
+                  >
+                    {link.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact Info */}
+          <div>
+            <h4 className="font-semibold mb-4">Contact Us</h4>
+            <ul className="space-y-3">
+              <li className="flex items-center space-x-2 text-sm text-muted-foreground">
+                <Mail className="h-4 w-4" />
+                <span>support@ai-clinic.com</span>
+              </li>
+              <li className="flex items-center space-x-2 text-sm text-muted-foreground">
+                <Phone className="h-4 w-4" />
+                <span>+1 (555) 123-4567</span>
+              </li>
+              <li className="flex items-center space-x-2 text-sm text-muted-foreground">
+                <MapPin className="h-4 w-4" />
+                <span>123 Health St, Medical City</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom Section */}
+        <div className="border-t mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+          <p className="text-sm text-muted-foreground mb-4 md:mb-0">
+            © 2025 AI-Clinic. All rights reserved.
+          </p>
+          <div className="flex space-x-6">
+            <button className="text-sm text-muted-foreground hover:text-primary transition-colors">
+              Privacy Policy
+            </button>
+            <button className="text-sm text-muted-foreground hover:text-primary transition-colors">
+              Terms of Service
+            </button>
+            <button className="text-sm text-muted-foreground hover:text-primary transition-colors">
+              Cookie Policy
+            </button>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
