@@ -13,9 +13,7 @@ import {
 } from "lucide-react";
 
 const SpecialtiesPage = () => {
-  const [selectedSpecialty, setSelectedSpecialty] = useState<string | null>(
-    null
-  );
+  const [, setSelectedSpecialty] = useState<string | null>(null);
   const specialties = [
     {
       title: "Cardiology",

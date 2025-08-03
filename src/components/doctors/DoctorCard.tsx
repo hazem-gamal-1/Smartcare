@@ -6,10 +6,26 @@ import { Badge } from "../ui/Badge";
 import { ImageWithFallback } from "../ui/ImageWithFallback";
 import { Star, Calendar, MapPin, CheckCircle, Award, User } from "lucide-react";
 
-const DoctorCard = ({ doctor }: { doctor: any }) => (
+export interface Doctor {
+  id: number;
+  name: string;
+  title: string; // e.g., "Dermatologist"
+  imageUrl: string; // Profile image URL
+  rating: number; // e.g., 4.8
+  reviewCount: number; // e.g., 120
+  experience: string; // e.g., "10 years"
+  location: string; // e.g., "Cairo, Egypt"
+  specialty: string; // e.g., "Cardiology"
+  bio: string; // Short biography text
+  nextAvailable: string; // e.g., "Tomorrow, 10:30 AM"
+  availableToday: boolean; // Availability flag
+  verified: boolean; // Verification badge flag
+}
+
+const DoctorCard = ({ doctor }: { doctor: Doctor }) => (
   <Card
     className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer border-0 shadow-lg"
-    onClick={() => true}
+    onClick={() => {}}
   >
     <CardContent className="p-0 overflow-hidden">
       <div className="flex flex-col lg:flex-row">
@@ -106,7 +122,6 @@ const DoctorCard = ({ doctor }: { doctor: any }) => (
                 className="flex-1 group-hover:shadow-lg transition-all duration-300"
                 onClick={(e) => {
                   e.stopPropagation();
-                  true;
                 }}
               >
                 <User className="h-4 w-4 mr-2" />
@@ -117,7 +132,6 @@ const DoctorCard = ({ doctor }: { doctor: any }) => (
                 className="flex-1 group-hover:border-primary group-hover:text-primary transition-all duration-300"
                 onClick={(e) => {
                   e.stopPropagation();
-                  true;
                 }}
               >
                 <Calendar className="h-4 w-4 mr-2" />
