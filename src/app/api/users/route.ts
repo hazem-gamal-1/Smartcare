@@ -5,13 +5,10 @@ const prisma = new PrismaClient();
 
 export async function GET() {
   try {
-    const specialties = await prisma.specialty.findMany({
-      orderBy: { title: "asc" },
-    });
-
-    return NextResponse.json(specialties);
+    const users = await prisma.user.findMany();
+    return NextResponse.json(users);
   } catch (error) {
-    console.error("Error fetching specialties:", error);
+    console.error("Error fetching users:", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
@@ -19,10 +16,10 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
-    const specialty = await prisma.specialty.create({ data });
-    return NextResponse.json(specialty);
+    const user = await prisma.user.create({ data });
+    return NextResponse.json(user);
   } catch (error) {
-    console.error("Error creating specialty:", error);
+    console.error("Error creating user:", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
