@@ -24,7 +24,6 @@ export default function Navigation() {
     { id: "/about", label: "About", url: "/about" },
     { id: "/contact", label: "Contact", url: "/contact" },
   ];
-  console.log(currentPage);
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -80,7 +79,13 @@ export default function Navigation() {
               )}
             </Button>
 
-            <Button size="sm" className="hidden md:flex" onClick={() => true}>
+            <Button
+              size="sm"
+              className="hidden md:flex"
+              onClick={() => {
+                router.push("/auth");
+              }}
+            >
               Sign In
             </Button>
 
@@ -109,6 +114,7 @@ export default function Navigation() {
                   key={item.id}
                   onClick={() => {
                     setIsMobileMenuOpen(false);
+                    router.push(item.url);
                   }}
                   className={`block w-full text-left px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                     currentPage === item.id
@@ -121,7 +127,7 @@ export default function Navigation() {
               ))}
               <div className="flex items-center justify-between px-3 py-2">
                 <span className="text-sm font-medium text-muted-foreground">
-                  Dark Mode
+                  {theme}
                 </span>
                 <Button variant="ghost" size="sm" onClick={toggleTheme}>
                   {theme === "light" ? (
@@ -137,7 +143,7 @@ export default function Navigation() {
                   className="w-full"
                   onClick={() => {
                     setIsMobileMenuOpen(false);
-                    router.push("auth")
+                    router.push("/auth");
                   }}
                 >
                   Sign In
