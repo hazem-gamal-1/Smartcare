@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Specialty } from "@prisma/client";
 import SpecialtyCard from "./SpecialtyCard";
 import {
   Heart,
@@ -13,91 +14,35 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
+const iconMap: Record<string, React.ReactNode> = {
+  Cardiology: <Heart className="h-5 w-5" />,
+  Neurology: <Brain className="h-5 w-5" />,
+  Ophthalmology: <Eye className="h-5 w-5" />,
+  "General Medicine": <Stethoscope className="h-5 w-5" />,
+  Pediatrics: <Baby className="h-5 w-5" />,
+  Orthopedics: <Bone className="h-5 w-5" />,
+  Pulmonology: <Wind className="h-5 w-5" />,
+  Dermatology: <Users className="h-5 w-5" />,
+};
 const SpecialtiesPage = () => {
   const router = useRouter();
   const [, setSelectedSpecialty] = useState<string | null>(null);
-  const specialties = [
-    {
-      title: "Cardiology",
-      description:
-        "Heart and cardiovascular system specialists providing comprehensive cardiac care",
-      imageUrl:
-        "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=500&fit=crop",
-      icon: <Heart className="h-5 w-5" />,
-      doctorCount: 24,
-      id: "cardiology",
-    },
-    {
-      title: "Neurology",
-      description:
-        "Brain and nervous system experts specializing in neurological disorders",
-      imageUrl:
-        "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=600&h=500&fit=crop",
-      icon: <Brain className="h-5 w-5" />,
-      doctorCount: 18,
-      id: "neurology",
-    },
-    {
-      title: "Ophthalmology",
-      description:
-        "Eye care and vision specialists offering comprehensive examinations",
-      imageUrl:
-        "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=600&h=500&fit=crop",
-      icon: <Eye className="h-5 w-5" />,
-      doctorCount: 12,
-      id: "ophthalmology",
-    },
-    {
-      title: "General Medicine",
-      description:
-        "Primary care physicians providing comprehensive health management",
-      imageUrl:
-        "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=500&fit=crop",
-      icon: <Stethoscope className="h-5 w-5" />,
-      doctorCount: 36,
-      id: "general",
-    },
-    {
-      title: "Pediatrics",
-      description:
-        "Child healthcare specialists focusing on infant and adolescent care",
-      imageUrl:
-        "https://images.unsplash.com/photo-1584432810601-6c7f27d2362b?w=600&h=500&fit=crop",
-      icon: <Baby className="h-5 w-5" />,
-      doctorCount: 20,
-      id: "pediatrics",
-    },
-    {
-      title: "Orthopedics",
-      description:
-        "Bone and joint specialists treating musculoskeletal conditions",
-      imageUrl:
-        "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&h=500&fit=crop",
-      icon: <Bone className="h-5 w-5" />,
-      doctorCount: 15,
-      id: "orthopedics",
-    },
-    {
-      title: "Pulmonology",
-      description:
-        "Respiratory system specialists treating lung and breathing disorders",
-      imageUrl:
-        "https://images.unsplash.com/photo-1584432810601-6c7f27d2362b?w=600&h=500&fit=crop",
-      icon: <Wind className="h-5 w-5" />,
-      doctorCount: 14,
-      id: "pulmonology",
-    },
-    {
-      title: "Dermatology",
-      description:
-        "Skin, hair, and nail specialists providing comprehensive dermatological care",
-      imageUrl:
-        "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&h=500&fit=crop",
-      icon: <Users className="h-5 w-5" />,
-      doctorCount: 18,
-      id: "dermatology",
-    },
-  ];
+  const [specialties, setSpecialties] = useState<Specialty[]>([]);
+
+  useEffect(() => {
+    const fetchSpecialties = async () => {
+      try {
+        const res = await fetch("/api/specialties");
+        const data = await res.json();
+        setSpecialties(data);
+      } catch (error) {
+        console.error("Failed to load specialties:", error);
+      } finally {
+      }
+    };
+
+    fetchSpecialties();
+  }, []);
 
   return (
     <div className="min-h-screen bg-background py-8">
@@ -147,7 +92,7 @@ const SpecialtiesPage = () => {
               title={specialty.title}
               description={specialty.description}
               imageUrl={specialty.imageUrl}
-              icon={specialty.icon}
+              icon={iconMap[specialty.title]}
               doctorCount={specialty.doctorCount}
               buttonText="View Doctors"
               onClick={() => {

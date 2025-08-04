@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  password     String
+  firstName    String
+  lastName     String
+  phone        String
+  bookings     Booking[]
+  appointments Appointment[]
+}
+
+model Specialty {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  imageUrl    String
+  doctorCount Int
+  doctors     Doctor[]
+}
+
+model Doctor {
+  id                String   @id @default(cuid())
+  name              String
+  title             String
+  specialtyId       String
+  specialty         Specialty @relation(fields: [specialtyId], references: [id])
+  experience        String
+  location          String
+  imageUrl          String
+  bio               String
+  availableToday    Boolean
+  nextAvailable     String
+  appointments      Appointment[]
+  education         Json?
+  certifications    Json?
+  languages         Json?
+  consultationTypes Json?
+  availableSlots    Json?
+  stats             Json?
+}
+
+model Appointment {
+  id       String @id @default(cuid())
+  userId   String
+  doctorId String
+  date     String
+  time     String
+  type     String
+  status   String
+  reason   String
+  duration Int
+  user     User   @relation(fields: [userId], references: [id])
+  doctor   Doctor @relation(fields: [doctorId], references: [id])
+}
+
+model Booking {
+  id                 String @id @default(cuid())
+  userId             String
+  user               User   @relation(fields: [userId], references: [id])
+  symptoms           String
+  currentMedications String
+}
+
+model AITool {
+  id          String @id @default(cuid())
+  title       String
+  description String
+  category    String
+  imageUrl    String
+}
