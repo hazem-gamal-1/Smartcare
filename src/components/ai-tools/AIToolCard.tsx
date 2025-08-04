@@ -39,7 +39,10 @@ export default function AIToolCard({
   const finalImageUrl = imageUrl || getDefaultImage(title);
 
   return (
-    <Card className="group relative overflow-hidden border hover:shadow-2xl transition-all duration-700 hover:-translate-y-3 cursor-pointer rounded-2xl bg-card min-h-[380px]">
+    <Card
+      className="group relative overflow-hidden border hover:shadow-2xl transition-all duration-700 hover:-translate-y-3 cursor-pointer rounded-2xl bg-card min-h-[380px]"
+      onClick={onClick}
+    >
       {/* Background Image Section */}
       <div className="relative h-48 overflow-hidden">
         <div

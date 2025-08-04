@@ -11,9 +11,10 @@ import {
   Globe,
   Sparkles,
 } from "lucide-react";
-
+import { useRouter } from "next/navigation";
 import React from "react";
 const HeroSection = () => {
+  const router = useRouter();
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-background to-secondary/10 min-h-[90vh] flex items-center">
       {/* Background decorative elements */}
@@ -52,7 +53,7 @@ const HeroSection = () => {
               <Button
                 size="lg"
                 className="text-lg px-10 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                onClick={() => true}
+                onClick={() =>{router.push("/ai-tools")} }
               >
                 Try AI Tools
                 <Zap className="ml-3 h-5 w-5" />
@@ -61,7 +62,7 @@ const HeroSection = () => {
                 size="lg"
                 variant="outline"
                 className="text-lg px-10 py-4 rounded-xl border-2 hover:shadow-lg transition-all duration-300"
-                onClick={() => true}
+                onClick={() => {router.push("/specialties")}}
               >
                 Find a Doctor
                 <ChevronRight className="ml-3 h-5 w-5" />

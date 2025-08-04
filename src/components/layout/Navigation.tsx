@@ -1,11 +1,15 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from "react";
 import { Button } from "../ui/Button";
 import { Moon, Sun, Menu, X, Stethoscope } from "lucide-react";
 import useThemeStore from "@/store/themeStore";
+import { useRouter, usePathname } from "next/navigation";
 
 export default function Navigation() {
-  const currentPage = "home";
+  const router = useRouter();
+  const currentPage = usePathname();
+
+  // const [currentPage, setCurrentPage] = useState<string>("home");
   const { loadTheme, toggleTheme, theme } = useThemeStore();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -14,13 +18,13 @@ export default function Navigation() {
   }, [loadTheme]);
 
   const navItems = [
-    { id: "home", label: "Home" },
-    { id: "doctors", label: "Find Doctors" },
-    { id: "ai-tools", label: "AI Tools" },
-    { id: "about", label: "About" },
-    { id: "contact", label: "Contact" },
+    { id: "/", label: "Home", url: "/" },
+    { id: "/specialties", label: "Find Doctors", url: "/specialties" },
+    { id: "/ai-tools", label: "AI Tools", url: "/ai-tools" },
+    { id: "/about", label: "About", url: "/about" },
+    { id: "/contact", label: "Contact", url: "/contact" },
   ];
-
+  console.log(currentPage);
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -28,7 +32,10 @@ export default function Navigation() {
           {/* Logo */}
           <div
             className="flex items-center space-x-2 cursor-pointer"
-            onClick={() => true}
+            onClick={() => {
+              router.push("/");
+              // setCurrentPage("home");
+            }}
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
               <Stethoscope className="h-5 w-5 text-primary-foreground" />
@@ -43,7 +50,10 @@ export default function Navigation() {
             {navItems.map((item) => (
               <button
                 key={item.id}
-                onClick={() => true}
+                onClick={() => {
+                  router.push(item.url);
+                  // setCurrentPage(item.id);
+                }}
                 className={`text-sm font-medium transition-colors hover:text-primary ${
                   currentPage === item.id
                     ? "text-primary"
@@ -127,6 +137,7 @@ export default function Navigation() {
                   className="w-full"
                   onClick={() => {
                     setIsMobileMenuOpen(false);
+                    router.push("auth")
                   }}
                 >
                   Sign In

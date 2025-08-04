@@ -3,16 +3,20 @@ import React from "react";
 import {
   Stethoscope,
   Facebook,
-  Twitter,
-  Instagram,
   Linkedin,
   Mail,
   Phone,
-  MapPin,
 } from "lucide-react";
 import { Button } from "../ui/Button";
+import {
+  FaSquareXTwitter,
+  FaTelegram,
+  FaSquareWhatsapp,
+} from "react-icons/fa6";
+import { useRouter } from "next/navigation";
 
 export default function Footer() {
+  const router = useRouter();
   return (
     <footer className="bg-card border-t">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -34,17 +38,56 @@ export default function Footer() {
 
             {/* Social Links */}
             <div className="flex space-x-4">
-              <Button variant="outline" size="sm" className="h-10 w-10 p-0">
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-10 w-10 p-0 text-primary"
+                onClick={() =>
+                  window.open("https://www.facebook.com/hazemg99", "_blank")
+                }
+              >
                 <Facebook className="h-4 w-4" />
               </Button>
-              <Button variant="outline" size="sm" className="h-10 w-10 p-0">
-                <Twitter className="h-4 w-4" />
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-10 w-10 p-0 text-primary"
+                onClick={() => window.open("https://x.com/hazemg99", "_blank")}
+              >
+                <FaSquareXTwitter className="h-4 w-4" />
               </Button>
-              <Button variant="outline" size="sm" className="h-10 w-10 p-0">
-                <Instagram className="h-4 w-4" />
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-10 w-10 p-0 text-primary"
+                onClick={() =>
+                  window.open("https://t.me/hazem223311", "_blank")
+                }
+              >
+                <FaTelegram className="h-4 w-4" />
               </Button>
-              <Button variant="outline" size="sm" className="h-10 w-10 p-0">
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-10 w-10 p-0 text-primary"
+                onClick={() =>
+                  window.open(
+                    "https://www.linkedin.com/in/hazemgamal1",
+                    "_blank"
+                  )
+                }
+              >
                 <Linkedin className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-10 w-10 p-0 text-primary"
+                onClick={() =>
+                  window.open("https://wa.me/201003165658", "_blank")
+                }
+              >
+                <FaSquareWhatsapp className="h-4 w-4" />
               </Button>
             </div>
           </div>
@@ -54,15 +97,21 @@ export default function Footer() {
             <h4 className="font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
               {[
-                { label: "Home", id: "home" },
-                { label: "Find Doctors", id: "doctors" },
-                { label: "AI Tools", id: "ai-tools" },
-                { label: "About Us", id: "about" },
-                { label: "Contact", id: "contact" },
+                { label: "Home", id: "/", url: "/" },
+                {
+                  label: "Find Doctors",
+                  id: "specialties",
+                  url: "specialties",
+                },
+                { label: "AI Tools", id: "ai-tools", url: "ai-tools" },
+                { label: "About Us", id: "about", url: "about" },
+                { label: "Contact", id: "contact", url: "contact" },
               ].map((link) => (
                 <li key={link.id}>
                   <button
-                    onClick={() => true}
+                    onClick={() => {
+                      router.push(link.url);
+                    }}
                     className="text-muted-foreground hover:text-primary transition-colors text-sm"
                   >
                     {link.label}
@@ -76,17 +125,21 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Contact Us</h4>
             <ul className="space-y-3">
-              <li className="flex items-center space-x-2 text-sm text-muted-foreground">
+              <li
+                className="flex items-center space-x-2 text-sm text-muted-foreground"
+                onClick={() =>
+                  (window.location.href = "mailto:hazemgamal223311@gmail.com")
+                }
+              >
                 <Mail className="h-4 w-4" />
-                <span>support@ai-clinic.com</span>
+                <span>hazemgamal223311@gmail.com</span>
               </li>
-              <li className="flex items-center space-x-2 text-sm text-muted-foreground">
+              <li
+                className="flex items-center space-x-2 text-sm text-muted-foreground"
+                onClick={() => (window.location.href = "tel:+201003165658")}
+              >
                 <Phone className="h-4 w-4" />
-                <span>+1 (555) 123-4567</span>
-              </li>
-              <li className="flex items-center space-x-2 text-sm text-muted-foreground">
-                <MapPin className="h-4 w-4" />
-                <span>123 Health St, Medical City</span>
+                <span>+20 100 316 5658</span>
               </li>
             </ul>
           </div>

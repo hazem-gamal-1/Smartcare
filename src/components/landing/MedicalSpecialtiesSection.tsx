@@ -10,8 +10,11 @@ import {
   ChevronRight,
   Star,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const MedicalSpecialtiesSection = () => {
+  const router = useRouter();
+
   const specialties = [
     {
       title: "Cardiology",
@@ -80,7 +83,9 @@ const MedicalSpecialtiesSection = () => {
               imageUrl={specialty.imageUrl}
               icon={specialty.icon}
               doctorCount={specialty.doctorCount}
-              onClick={() => true}
+              onClick={() => {
+                router.push("/specialties");
+              }}
             />
           ))}
         </div>
@@ -90,7 +95,9 @@ const MedicalSpecialtiesSection = () => {
             variant="outline"
             size="lg"
             className="px-8 py-4 rounded-xl border-2 hover:shadow-xl transition-all duration-300"
-            onClick={() => true}
+            onClick={() => {
+              router.push("/specialties");
+            }}
           >
             View All Specialties
             <ChevronRight className="ml-3 h-5 w-5" />

@@ -3,8 +3,9 @@ import React from "react";
 import { Button } from "../ui/Button";
 import AIToolCard from "../ai-tools/AIToolCard";
 import { Camera, MessageSquare, FileText, Zap, Sparkles } from "lucide-react";
-
+import { useRouter } from "next/navigation";
 const AIToolsSection = () => {
+  const router = useRouter();
   const aiTools = [
     {
       title: "Skin Health Analyzer",
@@ -64,7 +65,9 @@ const AIToolsSection = () => {
               icon={tool.icon}
               category={tool.category}
               imageUrl={tool.imageUrl}
-              onClick={() => true}
+              onClick={() => {
+                router.push("/ai-tools");
+              }}
             />
           ))}
         </div>
@@ -73,7 +76,9 @@ const AIToolsSection = () => {
           <Button
             size="lg"
             className="px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-            onClick={() => true}
+            onClick={() => {
+              router.push("/ai-tools");
+            }}
           >
             Explore All AI Tools
             <Sparkles className="ml-3 h-5 w-5" />
