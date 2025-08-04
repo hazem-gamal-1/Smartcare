@@ -11,8 +11,10 @@ import {
   Wind,
   Users,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const SpecialtiesPage = () => {
+  const router = useRouter();
   const [, setSelectedSpecialty] = useState<string | null>(null);
   const specialties = [
     {
@@ -50,7 +52,7 @@ const SpecialtiesPage = () => {
       description:
         "Primary care physicians providing comprehensive health management",
       imageUrl:
-        "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=600&h=500&fit=crop",
+        "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=500&fit=crop",
       icon: <Stethoscope className="h-5 w-5" />,
       doctorCount: 36,
       id: "general",
@@ -60,7 +62,7 @@ const SpecialtiesPage = () => {
       description:
         "Child healthcare specialists focusing on infant and adolescent care",
       imageUrl:
-        "https://images.unsplash.com/photo-1666214280577-909daa15876c?w=600&h=500&fit=crop",
+        "https://images.unsplash.com/photo-1584432810601-6c7f27d2362b?w=600&h=500&fit=crop",
       icon: <Baby className="h-5 w-5" />,
       doctorCount: 20,
       id: "pediatrics",
@@ -148,7 +150,10 @@ const SpecialtiesPage = () => {
               icon={specialty.icon}
               doctorCount={specialty.doctorCount}
               buttonText="View Doctors"
-              onClick={() => setSelectedSpecialty(specialty.id)}
+              onClick={() => {
+                setSelectedSpecialty(specialty.id);
+                router.push("/specialties/doctors");
+              }}
             />
           ))}
         </div>
