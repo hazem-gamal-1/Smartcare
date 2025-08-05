@@ -10,7 +10,6 @@ import {
   UserButton,
   SignedIn,
   SignedOut,
-  SignUpButton,
 } from "@clerk/nextjs";
 import { useHandleNavigation } from "@/hooks/useHandleNavigation";
 
