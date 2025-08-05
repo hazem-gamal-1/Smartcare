@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/Button";
 import SpecialtyCard from "../Specialties/SpecialtyCard";
 import {
@@ -7,51 +7,51 @@ import {
   Brain,
   Eye,
   Stethoscope,
-  ChevronRight,
+  Baby,
+  Bone,
+  Wind,
+  Users,
   Star,
+  ChevronRight,
 } from "lucide-react";
+
+import { Specialty } from "@prisma/client";
+import Loader from "../ui/Loader";
+
+const iconMap: Record<string, React.ReactNode> = {
+  Cardiology: <Heart className="h-5 w-5" />,
+  Neurology: <Brain className="h-5 w-5" />,
+  Ophthalmology: <Eye className="h-5 w-5" />,
+  "General Medicine": <Stethoscope className="h-5 w-5" />,
+  Pediatrics: <Baby className="h-5 w-5" />,
+  Orthopedics: <Bone className="h-5 w-5" />,
+  Pulmonology: <Wind className="h-5 w-5" />,
+  Dermatology: <Users className="h-5 w-5" />,
+};
 
 import { useHandleNavigation } from "@/hooks/useHandleNavigation";
 const MedicalSpecialtiesSection = () => {
   const { handleNavigation } = useHandleNavigation();
-  const specialties = [
-    {
-      title: "Cardiology",
-      description:
-        "Heart and cardiovascular system specialists providing comprehensive cardiac care and advanced diagnostics",
-      imageUrl:
-        "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=500&fit=crop",
-      icon: <Heart className="h-8 w-8" />,
-      doctorCount: 24,
-    },
-    {
-      title: "Neurology",
-      description:
-        "Brain and nervous system experts specializing in neurological disorders and cognitive health",
-      imageUrl:
-        "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=600&h=500&fit=crop",
-      icon: <Brain className="h-8 w-8" />,
-      doctorCount: 18,
-    },
-    {
-      title: "Ophthalmology",
-      description:
-        "Eye care and vision specialists offering comprehensive eye examinations and treatments",
-      imageUrl:
-        "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=600&h=500&fit=crop",
-      icon: <Eye className="h-8 w-8" />,
-      doctorCount: 12,
-    },
-    {
-      title: "General Medicine",
-      description:
-        "Primary care physicians providing comprehensive health management and preventive care",
-      imageUrl:
-        "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=600&h=500&fit=crop",
-      icon: <Stethoscope className="h-8 w-8" />,
-      doctorCount: 36,
-    },
-  ];
+
+  const [specialties, setSpecialties] = useState<Specialty[]>([]);
+  const [loading, setLoading] = useState<boolean>(true); // <- loading state
+
+  useEffect(() => {
+    const fetchSpecialties = async () => {
+      try {
+        const res = await fetch("/api/specialties");
+        const data = await res.json();
+        setSpecialties(data);
+      } catch (error) {
+        console.error("Failed to load specialties:", error);
+      } finally {
+        setLoading(false); // <- stop loading
+      }
+    };
+
+    fetchSpecialties();
+  }, []);
+
   return (
     <section className="py-24 bg-muted/30">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -72,22 +72,25 @@ const MedicalSpecialtiesSection = () => {
             you need it most.
           </p>
         </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-          {specialties.map((specialty, index) => (
-            <SpecialtyCard
-              key={index}
-              title={specialty.title}
-              description={specialty.description}
-              imageUrl={specialty.imageUrl}
-              icon={specialty.icon}
-              doctorCount={specialty.doctorCount}
-              onClick={() => {
-                handleNavigation("/specialties");
-              }}
-            />
-          ))}
-        </div>
+        {loading ? (
+          <Loader></Loader>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+            {specialties.slice(0, 4).map((specialty, index) => (
+              <SpecialtyCard
+                key={specialty.id}
+                title={specialty.title}
+                description={specialty.description}
+                imageUrl={specialty.imageUrl}
+                icon={iconMap[specialty.title]}
+                doctorCount={specialty.doctorCount}
+                onClick={() => {
+                  handleNavigation("/specialties");
+                }}
+              />
+            ))}
+          </div>
+        )}
 
         <div className="text-center">
           <Button

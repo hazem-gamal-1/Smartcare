@@ -13,6 +13,7 @@ import {
   Users,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Loader from "../ui/Loader";
 
 const iconMap: Record<string, React.ReactNode> = {
   Cardiology: <Heart className="h-5 w-5" />,
@@ -28,6 +29,7 @@ const SpecialtiesPage = () => {
   const router = useRouter();
   const [, setSelectedSpecialty] = useState<string | null>(null);
   const [specialties, setSpecialties] = useState<Specialty[]>([]);
+  const [loading, setLoading] = useState<boolean>(true); // <- loading state
 
   useEffect(() => {
     const fetchSpecialties = async () => {
@@ -38,6 +40,7 @@ const SpecialtiesPage = () => {
       } catch (error) {
         console.error("Failed to load specialties:", error);
       } finally {
+        setLoading(false); // <- stop loading
       }
     };
 
@@ -85,23 +88,27 @@ const SpecialtiesPage = () => {
         </div>
 
         {/* Specialties Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {specialties.map((specialty) => (
-            <SpecialtyCard
-              key={specialty.id}
-              title={specialty.title}
-              description={specialty.description}
-              imageUrl={specialty.imageUrl}
-              icon={iconMap[specialty.title]}
-              doctorCount={specialty.doctorCount}
-              buttonText="View Doctors"
-              onClick={() => {
-                setSelectedSpecialty(specialty.id);
-                router.push("/specialties/doctors");
-              }}
-            />
-          ))}
-        </div>
+        {loading ? (
+          <Loader />
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {specialties.map((specialty) => (
+              <SpecialtyCard
+                key={specialty.id}
+                title={specialty.title}
+                description={specialty.description}
+                imageUrl={specialty.imageUrl}
+                icon={iconMap[specialty.title]}
+                doctorCount={specialty.doctorCount}
+                buttonText="View Doctors"
+                onClick={() => {
+                  setSelectedSpecialty(specialty.id);
+                  router.push("/specialties/doctors");
+                }}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
