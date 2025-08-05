@@ -145,19 +145,49 @@ export default function Footer() {
 
         {/* Bottom Section */}
         <div className="border-t mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+          {/* Left side: Copyright */}
           <p className="text-sm text-muted-foreground mb-4 md:mb-0">
             © 2025 AI-Clinic. All rights reserved.
           </p>
-          <div className="flex space-x-6">
-            <button className="text-sm text-muted-foreground hover:text-primary transition-colors">
-              Privacy Policy
-            </button>
-            <button className="text-sm text-muted-foreground hover:text-primary transition-colors">
-              Terms of Service
-            </button>
-            <button className="text-sm text-muted-foreground hover:text-primary transition-colors">
-              Cookie Policy
-            </button>
+
+          {/* Right side: Built by + social links */}
+          <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4">
+            <p className="text-sm text-muted-foreground">
+              Built with ❤️ by Hazem Gamal
+            </p>
+            <div className="flex space-x-3">
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-10 w-10 p-0 text-primary"
+                onClick={() =>
+                  window.open("https://www.facebook.com/hazemg99", "_blank")
+                }
+              >
+                <Facebook className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-10 w-10 p-0 text-primary"
+                onClick={() => window.open("https://x.com/hazemg99", "_blank")}
+              >
+                <FaSquareXTwitter className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-10 w-10 p-0 text-primary"
+                onClick={() =>
+                  window.open(
+                    "https://www.linkedin.com/in/hazemgamal1",
+                    "_blank"
+                  )
+                }
+              >
+                <Linkedin className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
         </div>
       </div>
