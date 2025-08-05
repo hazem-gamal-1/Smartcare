@@ -5,8 +5,15 @@ import { useRouter, usePathname } from "next/navigation";
 import { Moon, Sun, Menu, X, Stethoscope } from "lucide-react";
 import { Button } from "../ui/Button";
 import useThemeStore from "@/store/themeStore";
-import { SignInButton, UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
+import {
+  SignInButton,
+  UserButton,
+  SignedIn,
+  SignedOut,
+  SignUpButton,
+} from "@clerk/nextjs";
 import { useHandleNavigation } from "@/hooks/useHandleNavigation";
+
 export default function Navigation() {
   const { handleNavigation } = useHandleNavigation();
   const router = useRouter();
@@ -59,6 +66,20 @@ export default function Navigation() {
                 {item.label}
               </button>
             ))}
+
+            {/* Dashboard link for signed-in users */}
+            <SignedIn>
+              <button
+                onClick={() => handleNavigation("/dashboard")}
+                className={`text-sm font-medium transition-colors hover:text-primary ${
+                  currentPage === "/dashboard"
+                    ? "text-primary"
+                    : "text-muted-foreground"
+                }`}
+              >
+                Dashboard
+              </button>
+            </SignedIn>
           </div>
 
           {/* Right side */}
@@ -126,6 +147,24 @@ export default function Navigation() {
                 </button>
               ))}
 
+              {/* Dashboard link for signed-in users */}
+              <SignedIn>
+                <button
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    handleNavigation("/dashboard");
+                  }}
+                  className={`block w-full text-left px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    currentPage === "/dashboard"
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  }`}
+                >
+                  Dashboard
+                </button>
+              </SignedIn>
+
+              {/* Theme toggle */}
               <div className="flex items-center justify-between px-3 py-2">
                 <span className="text-sm font-medium text-muted-foreground">
                   {theme}
