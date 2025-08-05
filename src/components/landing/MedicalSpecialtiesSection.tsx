@@ -10,11 +10,10 @@ import {
   ChevronRight,
   Star,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
 
+import { useHandleNavigation } from "@/hooks/useHandleNavigation";
 const MedicalSpecialtiesSection = () => {
-  const router = useRouter();
-
+  const { handleNavigation } = useHandleNavigation();
   const specialties = [
     {
       title: "Cardiology",
@@ -84,7 +83,7 @@ const MedicalSpecialtiesSection = () => {
               icon={specialty.icon}
               doctorCount={specialty.doctorCount}
               onClick={() => {
-                router.push("/specialties");
+                handleNavigation("/specialties");
               }}
             />
           ))}
@@ -96,7 +95,7 @@ const MedicalSpecialtiesSection = () => {
             size="lg"
             className="px-8 py-4 rounded-xl border-2 hover:shadow-xl transition-all duration-300"
             onClick={() => {
-              router.push("/specialties");
+              handleNavigation("/specialties");
             }}
           >
             View All Specialties

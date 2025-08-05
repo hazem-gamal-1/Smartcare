@@ -1,15 +1,17 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { Button } from "../ui/Button";
-import { Moon, Sun, Menu, X, Stethoscope } from "lucide-react";
-import useThemeStore from "@/store/themeStore";
-import { useRouter, usePathname } from "next/navigation";
 
+import React, { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { Moon, Sun, Menu, X, Stethoscope } from "lucide-react";
+import { Button } from "../ui/Button";
+import useThemeStore from "@/store/themeStore";
+import { SignInButton, UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
+import { useHandleNavigation } from "@/hooks/useHandleNavigation";
 export default function Navigation() {
+  const { handleNavigation } = useHandleNavigation();
   const router = useRouter();
   const currentPage = usePathname();
 
-  // const [currentPage, setCurrentPage] = useState<string>("home");
   const { loadTheme, toggleTheme, theme } = useThemeStore();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -24,6 +26,7 @@ export default function Navigation() {
     { id: "/about", label: "About", url: "/about" },
     { id: "/contact", label: "Contact", url: "/contact" },
   ];
+
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -31,10 +34,7 @@ export default function Navigation() {
           {/* Logo */}
           <div
             className="flex items-center space-x-2 cursor-pointer"
-            onClick={() => {
-              router.push("/");
-              // setCurrentPage("home");
-            }}
+            onClick={() => router.push("/")}
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
               <Stethoscope className="h-5 w-5 text-primary-foreground" />
@@ -44,15 +44,12 @@ export default function Navigation() {
             </span>
           </div>
 
-          {/* Desktop Navigation */}
+          {/* Desktop nav */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <button
                 key={item.id}
-                onClick={() => {
-                  router.push(item.url);
-                  // setCurrentPage(item.id);
-                }}
+                onClick={() => handleNavigation(item.id)}
                 className={`text-sm font-medium transition-colors hover:text-primary ${
                   currentPage === item.id
                     ? "text-primary"
@@ -64,7 +61,7 @@ export default function Navigation() {
             ))}
           </div>
 
-          {/* Right side controls */}
+          {/* Right side */}
           <div className="flex items-center space-x-4">
             <Button
               variant="ghost"
@@ -79,17 +76,20 @@ export default function Navigation() {
               )}
             </Button>
 
-            <Button
-              size="sm"
-              className="hidden md:flex"
-              onClick={() => {
-                router.push("/auth");
-              }}
-            >
-              Sign In
-            </Button>
+            {/* Clerk Auth Buttons */}
+            <SignedOut>
+              <SignInButton mode="modal">
+                <Button size="sm" className="hidden md:flex">
+                  Sign In
+                </Button>
+              </SignInButton>
+            </SignedOut>
 
-            {/* Mobile menu button */}
+            <SignedIn>
+              <UserButton afterSignOutUrl="/" />
+            </SignedIn>
+
+            {/* Mobile menu toggle */}
             <Button
               variant="ghost"
               size="sm"
@@ -105,7 +105,7 @@ export default function Navigation() {
           </div>
         </div>
 
-        {/* Mobile Navigation Menu */}
+        {/* Mobile menu */}
         {isMobileMenuOpen && (
           <div className="md:hidden border-t bg-card/95 backdrop-blur">
             <div className="px-2 py-3 space-y-1">
@@ -114,7 +114,7 @@ export default function Navigation() {
                   key={item.id}
                   onClick={() => {
                     setIsMobileMenuOpen(false);
-                    router.push(item.url);
+                    handleNavigation(item.id);
                   }}
                   className={`block w-full text-left px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                     currentPage === item.id
@@ -125,6 +125,7 @@ export default function Navigation() {
                   {item.label}
                 </button>
               ))}
+
               <div className="flex items-center justify-between px-3 py-2">
                 <span className="text-sm font-medium text-muted-foreground">
                   {theme}
@@ -137,17 +138,19 @@ export default function Navigation() {
                   )}
                 </Button>
               </div>
+
+              {/* Mobile auth buttons */}
               <div className="px-3 py-2">
-                <Button
-                  size="sm"
-                  className="w-full"
-                  onClick={() => {
-                    setIsMobileMenuOpen(false);
-                    router.push("/auth");
-                  }}
-                >
-                  Sign In
-                </Button>
+                <SignedOut>
+                  <SignInButton mode="modal">
+                    <Button size="sm" className="w-full">
+                      Sign In
+                    </Button>
+                  </SignInButton>
+                </SignedOut>
+                <SignedIn>
+                  <UserButton afterSignOutUrl="/" />
+                </SignedIn>
               </div>
             </div>
           </div>

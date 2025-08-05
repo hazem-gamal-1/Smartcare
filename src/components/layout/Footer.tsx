@@ -1,29 +1,27 @@
 "use client";
 import React from "react";
-import {
-  Stethoscope,
-  Facebook,
-  Linkedin,
-  Mail,
-  Phone,
-} from "lucide-react";
+import { Stethoscope, Facebook, Linkedin, Mail, Phone } from "lucide-react";
 import { Button } from "../ui/Button";
 import {
   FaSquareXTwitter,
   FaTelegram,
   FaSquareWhatsapp,
 } from "react-icons/fa6";
-import { useRouter } from "next/navigation";
+
+import { useHandleNavigation } from "@/hooks/useHandleNavigation";
 
 export default function Footer() {
-  const router = useRouter();
+  const { handleNavigation } = useHandleNavigation();
   return (
     <footer className="bg-card border-t">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand Section */}
           <div className="col-span-1 lg:col-span-2">
-            <div className="flex items-center space-x-2 mb-4">
+            <div
+              className="flex items-center space-x-2 mb-4"
+              onClick={() => handleNavigation("/")}
+            >
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
                 <Stethoscope className="h-5 w-5 text-primary-foreground" />
               </div>
@@ -100,17 +98,17 @@ export default function Footer() {
                 { label: "Home", id: "/", url: "/" },
                 {
                   label: "Find Doctors",
-                  id: "specialties",
+                  id: "/specialties",
                   url: "specialties",
                 },
-                { label: "AI Tools", id: "ai-tools", url: "ai-tools" },
-                { label: "About Us", id: "about", url: "about" },
-                { label: "Contact", id: "contact", url: "contact" },
+                { label: "AI Tools", id: "/ai-tools", url: "ai-tools" },
+                { label: "About Us", id: "/about", url: "about" },
+                { label: "Contact", id: "/contact", url: "contact" },
               ].map((link) => (
                 <li key={link.id}>
                   <button
                     onClick={() => {
-                      router.push(link.url);
+                      handleNavigation(link.id);
                     }}
                     className="text-muted-foreground hover:text-primary transition-colors text-sm"
                   >

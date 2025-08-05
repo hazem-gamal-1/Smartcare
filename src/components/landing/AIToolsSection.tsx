@@ -3,9 +3,9 @@ import React from "react";
 import { Button } from "../ui/Button";
 import AIToolCard from "../ai-tools/AIToolCard";
 import { Camera, MessageSquare, FileText, Zap, Sparkles } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useHandleNavigation } from "@/hooks/useHandleNavigation";
 const AIToolsSection = () => {
-  const router = useRouter();
+  const { handleNavigation } = useHandleNavigation();
   const aiTools = [
     {
       title: "Skin Health Analyzer",
@@ -66,7 +66,7 @@ const AIToolsSection = () => {
               category={tool.category}
               imageUrl={tool.imageUrl}
               onClick={() => {
-                router.push("/ai-tools");
+                handleNavigation("/ai-tools");
               }}
             />
           ))}
@@ -77,7 +77,7 @@ const AIToolsSection = () => {
             size="lg"
             className="px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
             onClick={() => {
-              router.push("/ai-tools");
+              handleNavigation("/ai-tools");
             }}
           >
             Explore All AI Tools
