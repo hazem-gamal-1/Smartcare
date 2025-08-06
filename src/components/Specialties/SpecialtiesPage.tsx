@@ -27,9 +27,8 @@ const iconMap: Record<string, React.ReactNode> = {
 };
 const SpecialtiesPage = () => {
   const router = useRouter();
-  const [, setSelectedSpecialty] = useState<string | null>(null);
   const [specialties, setSpecialties] = useState<Specialty[]>([]);
-  const [loading, setLoading] = useState<boolean>(true); // <- loading state
+  const [loading, setLoading] = useState<boolean>(true); 
 
   useEffect(() => {
     const fetchSpecialties = async () => {
@@ -40,7 +39,7 @@ const SpecialtiesPage = () => {
       } catch (error) {
         console.error("Failed to load specialties:", error);
       } finally {
-        setLoading(false); // <- stop loading
+        setLoading(false); 
       }
     };
 

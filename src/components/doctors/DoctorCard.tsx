@@ -2,9 +2,8 @@
 import React from "react";
 import { Card, CardContent } from "../ui/Card";
 import { Button } from "../ui/Button";
-import { Badge } from "../ui/Badge";
 import { ImageWithFallback } from "../ui/ImageWithFallback";
-import { Star, Calendar, MapPin, Award, User } from "lucide-react";
+import {  Calendar, MapPin, Award, User } from "lucide-react";
 import { Doctor } from "@prisma/client";
 
 const DoctorCard = ({ doctor }: { doctor: Doctor }) => (

@@ -7,12 +7,17 @@ import DoctorCard from "./DoctorCard";
 import { useHandleNavigation } from "@/hooks/useHandleNavigation";
 import Loader from "../ui/Loader";
 
+import { Specialty, Doctor } from "@prisma/client";
+interface SpecialtyWithDoctors extends Specialty {
+  doctors: Doctor[];
+}
+
 export default function DoctorsPage() {
   const { handleNavigation } = useHandleNavigation();
   const params = useParams();
   const specialtyId = params.specialtyid?.toString();
 
-  const [specialty, setSpecialty] = useState<any>(null);
+  const [specialty, setSpecialty] = useState<SpecialtyWithDoctors | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
