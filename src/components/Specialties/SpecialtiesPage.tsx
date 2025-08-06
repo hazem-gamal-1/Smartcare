@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Loader from "../ui/Loader";
+import ComponentLoader from "../ui/ComponentLoader";
 
 const iconMap: Record<string, React.ReactNode> = {
   Cardiology: <Heart className="h-5 w-5" />,
@@ -89,7 +90,7 @@ const SpecialtiesPage = () => {
 
         {/* Specialties Grid */}
         {loading ? (
-          <Loader />
+          <ComponentLoader />
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {specialties.map((specialty) => (

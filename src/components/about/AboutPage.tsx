@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
-
+import { useHandleNavigation } from "@/hooks/useHandleNavigation";
 export default function AboutPage() {
+  const { handleNavigation } = useHandleNavigation();
   return (
     <div className="min-h-screen bg-background py-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -117,13 +118,17 @@ export default function AboutPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
-                onClick={() => {}}
+                onClick={() => {
+                  handleNavigation("/ai-tools");
+                }}
                 className="px-8 py-4 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-colors text-lg font-medium"
               >
                 Try AI Tools
               </button>
               <button
-                onClick={() => {}}
+                onClick={() => {
+                  handleNavigation("/specialties");
+                }}
                 className="px-8 py-4 border-2 border-border rounded-xl hover:bg-muted transition-colors text-lg font-medium"
               >
                 Find a Doctor

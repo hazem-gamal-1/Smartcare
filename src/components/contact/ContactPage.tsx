@@ -29,7 +29,7 @@ export default function ContactPage() {
                     <input
                       type="text"
                       className="w-full px-4 py-3 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 bg-background"
-                      placeholder="John"
+                      placeholder="Hazem"
                     />
                   </div>
                   <div className="space-y-2">
@@ -37,7 +37,7 @@ export default function ContactPage() {
                     <input
                       type="text"
                       className="w-full px-4 py-3 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 bg-background"
-                      placeholder="Doe"
+                      placeholder="Gamal"
                     />
                   </div>
                 </div>
@@ -47,7 +47,7 @@ export default function ContactPage() {
                   <input
                     type="email"
                     className="w-full px-4 py-3 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 bg-background"
-                    placeholder="john@example.com"
+                    placeholder="hazemgamal223311@gmail.com"
                   />
                 </div>
 
@@ -90,53 +90,25 @@ export default function ContactPage() {
                     <div>
                       <h4 className="font-semibold">Email Support</h4>
                       <p className="text-muted-foreground">
-                        support@ai-clinic.com
+                       hazemgamal223311@gmail.com
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-4 h-40">
                     <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
                       <Phone className="w-6 h-6 text-primary" />
                     </div>
                     <div>
                       <h4 className="font-semibold">Phone Support</h4>
-                      <p className="text-muted-foreground">+1 (555) 123-4567</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
-                      <MapPin className="w-6 h-6 text-primary" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold">Office Address</h4>
-                      <p className="text-muted-foreground">
-                        123 Health St, Medical City, MC 12345
-                      </p>
+                      <p className="text-muted-foreground">+20 100 316 5658</p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-card rounded-3xl p-8 border">
+              <div className="bg-card rounded-3xl p-8 border h-80">
                 <h3 className="text-xl font-bold mb-6">Business Hours</h3>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">
-                      Monday - Friday
-                    </span>
-                    <span className="font-medium">9:00 AM - 6:00 PM</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Saturday</span>
-                    <span className="font-medium">10:00 AM - 4:00 PM</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Sunday</span>
-                    <span className="font-medium">Closed</span>
-                  </div>
-                </div>
                 <div className="mt-6 p-4 bg-primary/5 rounded-lg">
                   <p className="text-sm text-primary font-medium">
                     Emergency support available 24/7 through our AI tools
