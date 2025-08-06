@@ -16,7 +16,9 @@ import {
 } from "lucide-react";
 
 import { Specialty } from "@prisma/client";
-import Loader from "../ui/Loader";
+
+import { useHandleNavigation } from "@/hooks/useHandleNavigation";
+import ComponentLoader from "../ui/ComponentLoader";
 
 const iconMap: Record<string, React.ReactNode> = {
   Cardiology: <Heart className="h-5 w-5" />,
@@ -29,7 +31,6 @@ const iconMap: Record<string, React.ReactNode> = {
   Dermatology: <Users className="h-5 w-5" />,
 };
 
-import { useHandleNavigation } from "@/hooks/useHandleNavigation";
 const MedicalSpecialtiesSection = () => {
   const { handleNavigation } = useHandleNavigation();
 
@@ -73,7 +74,7 @@ const MedicalSpecialtiesSection = () => {
           </p>
         </div>
         {loading ? (
-          <Loader></Loader>
+          <ComponentLoader></ComponentLoader>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
             {specialties.slice(0, 4).map((specialty) => (

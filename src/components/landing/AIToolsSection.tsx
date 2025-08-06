@@ -2,10 +2,10 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "../ui/Button";
 import AIToolCard from "../ai-tools/AIToolCard";
-import { Camera, MessageSquare, FileText, Zap, Sparkles } from "lucide-react";
+import { Camera, MessageSquare, Zap, Sparkles } from "lucide-react";
 import { useHandleNavigation } from "@/hooks/useHandleNavigation";
 import { AITool } from "@prisma/client";
-
+import ComponentLoader from "../ui/ComponentLoader";
 const iconMap: Record<string, React.ReactNode> = {
   Dermatology: <Camera className="h-5 w-5" />,
   Pharmacy: <MessageSquare className="h-5 w-5" />,
@@ -52,23 +52,25 @@ const AIToolsSection = () => {
             accurate, and always available to support your health journey.
           </p>
         </div>
-
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
-          {aiTools.slice(0, 3).map((tool, index) => (
-            <AIToolCard
-              key={index}
-              title={tool.title}
-              description={tool.description}
-              icon={iconMap[tool.category]}
-              category={tool.category}
-              imageUrl={tool.imageUrl}
-              onClick={() => {
-                handleNavigation("/ai-tools");
-              }}
-            />
-          ))}
-        </div>
-
+        {loading ? (
+          <ComponentLoader />
+        ) : (
+          <div className="grid md:grid-cols-3 gap-8 mb-16">
+            {aiTools.slice(0, 3).map((tool, index) => (
+              <AIToolCard
+                key={index}
+                title={tool.title}
+                description={tool.description}
+                icon={iconMap[tool.category]}
+                category={tool.category}
+                imageUrl={tool.imageUrl}
+                onClick={() => {
+                  handleNavigation("/ai-tools");
+                }}
+              />
+            ))}
+          </div>
+        )}
         <div className="text-center">
           <Button
             size="lg"
