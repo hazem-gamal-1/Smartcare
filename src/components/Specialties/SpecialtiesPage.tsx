@@ -13,7 +13,6 @@ import {
   Users,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import Loader from "../ui/Loader";
 import ComponentLoader from "../ui/ComponentLoader";
 
 const iconMap: Record<string, React.ReactNode> = {
