@@ -73,7 +73,7 @@ export default function DoctorsPage() {
         {/* Doctor List */}
         {specialty?.doctors?.length > 0 ? (
           <div className="space-y-6">
-            {specialty.doctors.map((doctor: any) => (
+            {specialty.doctors.map((doctor: Doctor) => (
               <DoctorCard key={doctor.id} doctor={doctor} />
             ))}
           </div>
