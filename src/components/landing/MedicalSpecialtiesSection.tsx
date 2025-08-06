@@ -76,7 +76,7 @@ const MedicalSpecialtiesSection = () => {
           <Loader></Loader>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-            {specialties.slice(0, 4).map((specialty, index) => (
+            {specialties.slice(0, 4).map((specialty) => (
               <SpecialtyCard
                 key={specialty.id}
                 title={specialty.title}

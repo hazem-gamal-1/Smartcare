@@ -1,40 +1,37 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "../ui/Button";
 import AIToolCard from "../ai-tools/AIToolCard";
 import { Camera, MessageSquare, FileText, Zap, Sparkles } from "lucide-react";
 import { useHandleNavigation } from "@/hooks/useHandleNavigation";
+import { AITool } from "@prisma/client";
+
+const iconMap: Record<string, React.ReactNode> = {
+  Dermatology: <Camera className="h-5 w-5" />,
+  Pharmacy: <MessageSquare className="h-5 w-5" />,
+};
+
 const AIToolsSection = () => {
   const { handleNavigation } = useHandleNavigation();
-  const aiTools = [
-    {
-      title: "Skin Health Analyzer",
-      description:
-        "Upload photos to get AI-powered analysis of skin conditions, moles, and rashes with personalized recommendations and treatment suggestions",
-      icon: <Camera className="h-8 w-8" />,
-      category: "Dermatology",
-      imageUrl:
-        "https://images.unsplash.com/photo-1576086213369-97a306d36557?w=500&h=400&fit=crop",
-    },
-    {
-      title: "Symptom Checker",
-      description:
-        "Chat with our advanced AI to understand your symptoms, get preliminary health insights, and receive guidance on next steps",
-      icon: <MessageSquare className="h-8 w-8" />,
-      category: "General",
-      imageUrl:
-        "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=500&h=400&fit=crop",
-    },
-    {
-      title: "Report Summarizer",
-      description:
-        "Upload medical reports and get clear, understandable summaries with key insights highlighted and explained in simple terms",
-      icon: <FileText className="h-8 w-8" />,
-      category: "Analysis",
-      imageUrl:
-        "https://images.unsplash.com/photo-1551076805-e1869033e561?w=500&h=400&fit=crop",
-    },
-  ];
+
+  const [aiTools, setAiTools] = useState<AITool[]>([]);
+  const [loading, setLoading] = useState<boolean>(true); // <- loading state
+
+  useEffect(() => {
+    const fetchSpecialties = async () => {
+      try {
+        const res = await fetch("/api/ai-tools");
+        const data = await res.json();
+        setAiTools(data);
+      } catch (error) {
+        console.error("Failed to load specialties:", error);
+      } finally {
+        setLoading(false); // <- stop loading
+      }
+    };
+
+    fetchSpecialties();
+  }, []);
 
   return (
     <section className="py-24">
@@ -57,12 +54,12 @@ const AIToolsSection = () => {
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 mb-16">
-          {aiTools.map((tool, index) => (
+          {aiTools.slice(0, 3).map((tool, index) => (
             <AIToolCard
               key={index}
               title={tool.title}
               description={tool.description}
-              icon={tool.icon}
+              icon={iconMap[tool.category]}
               category={tool.category}
               imageUrl={tool.imageUrl}
               onClick={() => {
