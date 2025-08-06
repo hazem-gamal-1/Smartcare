@@ -10,10 +10,20 @@ export async function GET(
   const { id } = await context.params;
 
   try {
-    const specialty = await prisma.specialty.findUnique({ where: { id } });
+    const specialty = await prisma.specialty.findUnique({
+      where: { id },
+      include: {
+        doctors: true,
+      },
+    });
+
+    if (!specialty) {
+      return new NextResponse("Specialty not found", { status: 404 });
+    }
+
     return NextResponse.json(specialty);
   } catch (error) {
-    console.error("Error fetching specialty:", error);
+    console.error("Error fetching specialty with doctors:", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

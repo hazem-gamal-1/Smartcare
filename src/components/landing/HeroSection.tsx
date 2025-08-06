@@ -65,7 +65,7 @@ const HeroSection = () => {
                 variant="outline"
                 className="text-lg px-10 py-4 rounded-xl border-2 hover:shadow-lg transition-all duration-300"
                 onClick={() => {
-                  handleNavigation("/Specialties");
+                  handleNavigation("/specialties");
                 }}
               >
                 Find a Doctor

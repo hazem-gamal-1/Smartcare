@@ -102,8 +102,7 @@ const SpecialtiesPage = () => {
                 doctorCount={specialty.doctorCount}
                 buttonText="View Doctors"
                 onClick={() => {
-                  setSelectedSpecialty(specialty.id);
-                  router.push("/specialties/doctors");
+                  router.push(`/specialties/${specialty.id}`);
                 }}
               />
             ))}
