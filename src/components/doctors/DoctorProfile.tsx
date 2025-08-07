@@ -8,9 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/Tabs";
 import { Separator } from "../ui/Separator";
 import {
   ArrowLeft,
-  Star,
   MapPin,
-  Clock,
   Calendar,
   Phone,
   GraduationCap,
@@ -24,9 +22,10 @@ import {
   CheckCircle,
 } from "lucide-react";
 import Loader from "../ui/Loader";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 
 import { Specialty, Doctor } from "@prisma/client";
+import { useHandleNavigation } from "@/hooks/useHandleNavigation";
 type Education = { degree: string; institution: string; year: string };
 interface DoctorWithSpecialty extends Doctor {
   specialty: Specialty;
@@ -42,11 +41,12 @@ interface DoctorWithSpecialty extends Doctor {
 }
 
 export default function DoctorProfile() {
+  const { handleNavigation } = useHandleNavigation();
   const params = useParams();
   const id = params.doctorid as string;
+  const specialtyId = params.specialtyid as string;
   const [doctor, setDoctor] = useState<DoctorWithSpecialty | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const router = useRouter();
   useEffect(() => {
     const fetchSpecialties = async () => {
       try {
@@ -61,7 +61,7 @@ export default function DoctorProfile() {
     };
 
     fetchSpecialties();
-  }, []);
+  }, [id]);
 
   if (loading) {
     return <Loader></Loader>;
@@ -76,7 +76,7 @@ export default function DoctorProfile() {
         <Button
           variant="ghost"
           onClick={() => {
-            router.back();
+            handleNavigation(`/specialties/${[specialtyId]}`);
           }}
           className="mb-6 hover:bg-muted"
         >
@@ -168,7 +168,7 @@ export default function DoctorProfile() {
 
             {/* Detailed Information Tabs */}
             <Tabs defaultValue="about" className="w-full">
-              <TabsList className="grid w-full grid-cols-1">
+              <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="about">About</TabsTrigger>
                 <TabsTrigger value="education">Education</TabsTrigger>
               </TabsList>
