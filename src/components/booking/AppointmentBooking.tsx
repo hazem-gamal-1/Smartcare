@@ -364,10 +364,6 @@ export default function AppointmentBooking() {
           <Label htmlFor="symptoms">Primary Symptoms/Concerns</Label>
           <Textarea
             id="symptoms"
-            value={bookingData.symptoms}
-            onChange={(e) =>
-              setBookingData((prev) => ({ ...prev, symptoms: e.target.value }))
-            }
             placeholder="Please describe your symptoms or health concerns..."
             rows={3}
             required
@@ -400,13 +396,6 @@ export default function AppointmentBooking() {
           <Label htmlFor="currentMedications">Current Medications</Label>
           <Textarea
             id="currentMedications"
-            value={bookingData.currentMedications}
-            onChange={(e) =>
-              setBookingData((prev) => ({
-                ...prev,
-                currentMedications: e.target.value,
-              }))
-            }
             placeholder="List any medications you're currently taking..."
             rows={2}
           />

@@ -5,12 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { Moon, Sun, Menu, X, Stethoscope } from "lucide-react";
 import { Button } from "../ui/Button";
 import useThemeStore from "@/store/themeStore";
-import {
-  SignInButton,
-  UserButton,
-  SignedIn,
-  SignedOut,
-} from "@clerk/nextjs";
+import { SignInButton, UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { useHandleNavigation } from "@/hooks/useHandleNavigation";
 
 export default function Navigation() {
@@ -76,7 +71,7 @@ export default function Navigation() {
                     : "text-muted-foreground"
                 }`}
               >
-                Dashboard
+                My Appointments
               </button>
             </SignedIn>
           </div>
@@ -159,7 +154,7 @@ export default function Navigation() {
                       : "text-muted-foreground hover:text-foreground hover:bg-muted"
                   }`}
                 >
-                  Dashboard
+                  My Appointments
                 </button>
               </SignedIn>
 

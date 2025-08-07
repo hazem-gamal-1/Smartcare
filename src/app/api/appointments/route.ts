@@ -4,10 +4,9 @@ import { auth } from "@clerk/nextjs/server";
 
 const prisma = new PrismaClient();
 
-
 export async function GET() {
   try {
-    const { userId } =await auth();
+    const { userId } = await auth();
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -18,7 +17,11 @@ export async function GET() {
         userId,
       },
       include: {
-        doctor: true,
+        doctor: {
+          include: {
+            specialty: true, 
+          },
+        },
       },
       orderBy: {
         date: "desc",
