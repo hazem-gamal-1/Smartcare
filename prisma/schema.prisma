@@ -7,16 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id           String     @id @default(cuid())
-  email        String     @unique
-  password     String
-  firstName    String
-  lastName     String
-  phone        String
-  bookings     Booking[]
-  appointments Appointment[]
-}
 
 model Specialty {
   id          String   @id @default(cuid())
@@ -45,26 +35,15 @@ model Doctor {
 }
 
 model Appointment {
-  id       String @id @default(cuid())
-  userId   String
-  doctorId String
-  date     String
-  time     String
-  type     String
-  status   String
-  reason   String
-  duration Int
-  user     User   @relation(fields: [userId], references: [id])
-  doctor   Doctor @relation(fields: [doctorId], references: [id])
+  id                 Int      @id @default(autoincrement())
+  doctor             Doctor   @relation(fields: [doctorId], references: [id])
+  doctorId           String  
+  userId             String   
+  date               DateTime
+  time               String
 }
 
-model Booking {
-  id                 String @id @default(cuid())
-  userId             String
-  user               User   @relation(fields: [userId], references: [id])
-  symptoms           String
-  currentMedications String
-}
+
 
 model AITool {
   id          String @id @default(cuid())

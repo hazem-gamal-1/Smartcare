@@ -78,7 +78,7 @@ const DoctorCard = ({ doctor }: { doctor: Doctor }) => {
                   className="flex-1 group-hover:border-primary group-hover:text-primary transition-all duration-300"
                   onClick={() => {
                     handleNavigation(
-                      `/booking/${doctor.id}`
+                      `/specialties/${[specialtyId]}/${doctor.id}/booking`
                     );
                   }}
                 >

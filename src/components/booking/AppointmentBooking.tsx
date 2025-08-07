@@ -1,7 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/Card";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
@@ -24,37 +23,57 @@ import {
   FileText,
   CreditCard,
   CheckCircle,
-  Upload,
   Video,
   MessageSquare,
   Phone,
-  Star,
 } from "lucide-react";
-
-export default function AppointmentBooking() {
-  const doctor = {
-    id: 1,
-    name: "Dr. Sarah Johnson",
-    title: "Senior Cardiologist",
-    specialty: "Cardiology",
-    rating: 4.9,
-    reviewCount: 127,
-    reviews: 127,
-    experience: "15+ years",
-    location: "New York, NY",
-
-    image:
-      "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=300&h=300&fit=crop",
-    bio: "Specialized in interventional cardiology and heart disease prevention with extensive experience in complex cardiac procedures.",
-    verified: true,
-    availableToday: true,
-    nextAvailable: "Today 2:00 PM",
+import { Specialty, Doctor } from "@prisma/client";
+import { useHandleNavigation } from "@/hooks/useHandleNavigation";
+type Education = { degree: string; institution: string; year: string };
+interface DoctorWithSpecialty extends Doctor {
+  specialty: Specialty;
+  languages: string[];
+  certifications: string[];
+  stats: {
+    totalPatients: number;
+    yearsExperience: number;
+    successRate: number;
+    avgRating: number;
   };
-  const [currentStep, setCurrentStep] = useState(1);
+  education: Education[];
+}
+import Loader from "../ui/Loader";
+
+import { useParams } from "next/navigation";
+export default function AppointmentBooking() {
+  const { handleNavigation } = useHandleNavigation();
+  const params = useParams();
+  const id = params.doctorid as string;
+  console.log(id);
+  const specialtyId = params.specialtyid as string;
+  const [doctor, setDoctor] = useState<DoctorWithSpecialty | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  useEffect(() => {
+    const fetchSpecialties = async () => {
+      try {
+        const res = await fetch(`/api/doctors/${id}`);
+        const data = await res.json();
+        setDoctor(data);
+      } catch (error) {
+        console.error("Failed to load specialties:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSpecialties();
+  }, [id]);
+
+  const [currentStep, setCurrentStep] = useState<number>(1);
   const [selectedDate, setSelectedDate] = useState<Date>();
-  const [selectedTime, setSelectedTime] = useState("");
-  const [consultationType, setConsultationType] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [selectedTime, setSelectedTime] = useState<string>("");
+  const [consultationType, setConsultationType] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [bookingData, setBookingData] = useState({
     patientInfo: {
       firstName: "",
@@ -65,11 +84,7 @@ export default function AppointmentBooking() {
       gender: "",
     },
     symptoms: "",
-    medicalHistory: "",
     currentMedications: "",
-    allergies: "",
-    urgency: "routine",
-    documents: [] as File[],
   });
 
   const availableTimes = [
@@ -124,24 +139,36 @@ export default function AppointmentBooking() {
     }));
   };
 
-  const handleFileUpload = (files: FileList | null) => {
-    if (files) {
-      setBookingData((prev) => ({
-        ...prev,
-        documents: [...prev.documents, ...Array.from(files)],
-      }));
-    }
-  };
-
-  const handleBookingSubmit = () => {
+  const handleBookingSubmit = async () => {
     setIsLoading(true);
 
-    // Simulate booking process
-    setTimeout(() => {
+    try {
+      const response = await fetch("/api/appointments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          doctorId: id,
+          date: selectedDate?.toISOString(),
+          time: selectedTime,
+        }),
+      });
 
-      setCurrentStep(6); // Confirmation step
+      if (!response.ok) {
+        throw new Error("Failed to create appointment");
+      }
+
+      const result = await response.json();
+      console.log("Appointment created:", result);
+
+      setCurrentStep(6); // Success step
+    } catch (error) {
+      console.error("Error submitting appointment:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
       setIsLoading(false);
-    }, 2000);
+    }
   };
 
   const nextStep = () => {
@@ -370,22 +397,6 @@ export default function AppointmentBooking() {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-2">
-          <Label htmlFor="medicalHistory">Medical History</Label>
-          <Textarea
-            id="medicalHistory"
-            value={bookingData.medicalHistory}
-            onChange={(e) =>
-              setBookingData((prev) => ({
-                ...prev,
-                medicalHistory: e.target.value,
-              }))
-            }
-            placeholder="Any previous medical conditions, surgeries, or relevant health information..."
-            rows={3}
-          />
-        </div>
-
-        <div className="space-y-2">
           <Label htmlFor="currentMedications">Current Medications</Label>
           <Textarea
             id="currentMedications"
@@ -400,75 +411,6 @@ export default function AppointmentBooking() {
             rows={2}
           />
         </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="allergies">Known Allergies</Label>
-          <Input
-            id="allergies"
-            value={bookingData.allergies}
-            onChange={(e) =>
-              setBookingData((prev) => ({ ...prev, allergies: e.target.value }))
-            }
-            placeholder="Any known allergies to medications, foods, etc."
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="urgency">Urgency Level</Label>
-          <Select
-            value={bookingData.urgency}
-            onValueChange={(value) =>
-              setBookingData((prev) => ({ ...prev, urgency: value }))
-            }
-          >
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="routine">Routine (Non-urgent)</SelectItem>
-              <SelectItem value="soon">Moderate (Within a week)</SelectItem>
-              <SelectItem value="urgent">Urgent (Same day)</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="space-y-2">
-          <Label>Upload Documents (Optional)</Label>
-          <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center">
-            <Upload className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
-            <p className="text-sm text-muted-foreground mb-2">
-              Upload medical records, test results, or relevant documents
-            </p>
-            <input
-              type="file"
-              multiple
-              accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-              onChange={(e) => handleFileUpload(e.target.files)}
-              className="hidden"
-              id="file-upload"
-            />
-            <Label htmlFor="file-upload" className="cursor-pointer">
-              <Button variant="outline" size="sm">
-                Choose Files
-              </Button>
-            </Label>
-          </div>
-          {bookingData.documents.length > 0 && (
-            <div className="space-y-2">
-              <p className="text-sm font-medium">Uploaded Files:</p>
-              {bookingData.documents.map((file, index) => (
-                <div
-                  key={index}
-                  className="flex items-center space-x-2 text-sm"
-                >
-                  <FileText className="h-4 w-4" />
-                  <span>{file.name}</span>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
         <div className="flex justify-between">
           <Button variant="outline" onClick={prevStep}>
             Back
@@ -673,8 +615,19 @@ export default function AppointmentBooking() {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button onClick={() => {}}>Go to Dashboard</Button>
-          <Button variant="outline" onClick={() => {}}>
+          <Button
+            onClick={() => {
+              () => handleNavigation("/dashboard");
+            }}
+          >
+            Go to Dashboard
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => {
+              handleNavigation("/");
+            }}
+          >
             Back to Home
           </Button>
         </div>
@@ -682,13 +635,26 @@ export default function AppointmentBooking() {
     </Card>
   );
 
+  if (loading) {
+    return <Loader></Loader>;
+  }
+
+  if (!doctor) {
+    return <div className="">Error</div>;
+  }
   return (
     <div className="min-h-screen bg-background py-8">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-8">
-            <Button variant="ghost" onClick={() => {}} className="mb-4">
+            <Button
+              variant="ghost"
+              onClick={() => {
+                handleNavigation(`/specialties/${[specialtyId]}`);
+              }}
+              className="mb-4"
+            >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Doctors
             </Button>
@@ -699,7 +665,7 @@ export default function AppointmentBooking() {
                   <div className="flex items-center space-x-4">
                     <div className="h-16 w-16 rounded-full overflow-hidden bg-muted relative">
                       <Image
-                        src="/doctor.jpg"
+                        src={doctor.imageUrl}
                         alt="Profile"
                         fill
                         className="object-cover"
@@ -709,11 +675,9 @@ export default function AppointmentBooking() {
                       <h2 className="text-xl font-bold">{doctor.name}</h2>
                       <p className="text-muted-foreground">{doctor.title}</p>
                       <div className="flex items-center space-x-2 mt-1">
-                        <div className="flex items-center">
-                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                          <span className="ml-1 text-sm">{doctor.rating}</span>
-                        </div>
-                        <Badge variant="secondary">{doctor.specialty}</Badge>
+                        <Badge variant="secondary">
+                          {doctor.specialty.title}
+                        </Badge>
                       </div>
                     </div>
                   </div>
