@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
-import { Plus, Calendar, Clock, Video, Phone, Activity } from "lucide-react";
+import { Plus, Calendar, Clock, Activity } from "lucide-react";
 import { Appointment, Doctor, Specialty } from "@prisma/client";
 import Loader from "../ui/Loader";
 import { useHandleNavigation } from "@/hooks/useHandleNavigation";
