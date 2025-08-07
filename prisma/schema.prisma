@@ -37,14 +37,10 @@ model Doctor {
   location          String
   imageUrl          String
   bio               String
-  availableToday    Boolean
-  nextAvailable     String
   appointments      Appointment[]
   education         Json?
   certifications    Json?
   languages         Json?
-  consultationTypes Json?
-  availableSlots    Json?
   stats             Json?
 }
 

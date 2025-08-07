@@ -18,8 +18,7 @@ import {
 import { Specialty } from "@prisma/client";
 
 import { useHandleNavigation } from "@/hooks/useHandleNavigation";
-import ComponentLoader from "../ui/ComponentLoader";
-
+import Loader from "../ui/Loader";
 const iconMap: Record<string, React.ReactNode> = {
   Cardiology: <Heart className="h-5 w-5" />,
   Neurology: <Brain className="h-5 w-5" />,
@@ -53,6 +52,10 @@ const MedicalSpecialtiesSection = () => {
     fetchSpecialties();
   }, []);
 
+  if (loading) {
+    return <Loader />;
+  }
+  
   return (
     <section className="py-24 bg-muted/30">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -73,9 +76,7 @@ const MedicalSpecialtiesSection = () => {
             you need it most.
           </p>
         </div>
-        {loading ? (
-          <ComponentLoader></ComponentLoader>
-        ) : (
+        {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
             {specialties.slice(0, 4).map((specialty) => (
               <SpecialtyCard
@@ -91,7 +92,7 @@ const MedicalSpecialtiesSection = () => {
               />
             ))}
           </div>
-        )}
+        }
 
         <div className="text-center">
           <Button

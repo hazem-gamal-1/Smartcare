@@ -5,7 +5,7 @@ import AIToolCard from "./AIToolCard";
 import { Camera, MessageSquare, Zap, ChevronRight } from "lucide-react";
 import { useHandleNavigation } from "@/hooks/useHandleNavigation";
 import { AITool } from "@prisma/client";
-import ComponentLoader from "../ui/ComponentLoader";
+import Loader from "../ui/Loader";
 const iconMap: Record<string, React.ReactNode> = {
   Dermatology: <Camera className="h-5 w-5" />,
   Pharmacy: <MessageSquare className="h-5 w-5" />,
@@ -31,6 +31,10 @@ export default function AIToolsPage() {
     fetchSpecialties();
   }, []);
 
+  if (loading) {
+    return <Loader></Loader>;
+  }
+
   return (
     <div className="min-h-screen bg-background py-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -54,9 +58,7 @@ export default function AIToolsPage() {
         </div>
 
         {/* AI Tools Grid */}
-        {loading ? (
-          <ComponentLoader></ComponentLoader>
-        ) : (
+        {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {aiTools.map((tool, index) => (
               <AIToolCard
@@ -70,9 +72,8 @@ export default function AIToolsPage() {
               />
             ))}
           </div>
-        )}
+        }
 
-        
         {/* Call-to-Action Section */}
         <div className="text-center bg-gradient-to-r from-primary/5 to-secondary/5 rounded-3xl p-12">
           <h2 className="text-3xl font-bold font-[Plus_Jakarta_Sans] mb-6">

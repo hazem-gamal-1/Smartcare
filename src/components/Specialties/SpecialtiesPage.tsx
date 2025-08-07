@@ -13,7 +13,7 @@ import {
   Users,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import ComponentLoader from "../ui/ComponentLoader";
+import Loader from "../ui/Loader";
 
 const iconMap: Record<string, React.ReactNode> = {
   Cardiology: <Heart className="h-5 w-5" />,
@@ -28,7 +28,7 @@ const iconMap: Record<string, React.ReactNode> = {
 const SpecialtiesPage = () => {
   const router = useRouter();
   const [specialties, setSpecialties] = useState<Specialty[]>([]);
-  const [loading, setLoading] = useState<boolean>(true); 
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchSpecialties = async () => {
@@ -39,12 +39,16 @@ const SpecialtiesPage = () => {
       } catch (error) {
         console.error("Failed to load specialties:", error);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
     fetchSpecialties();
   }, []);
+
+  if (loading) {
+    return <Loader></Loader>;
+  }
 
   return (
     <div className="min-h-screen bg-background py-8">
@@ -87,9 +91,7 @@ const SpecialtiesPage = () => {
         </div>
 
         {/* Specialties Grid */}
-        {loading ? (
-          <ComponentLoader />
-        ) : (
+        {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {specialties.map((specialty) => (
               <SpecialtyCard
@@ -106,7 +108,7 @@ const SpecialtiesPage = () => {
               />
             ))}
           </div>
-        )}
+        }
       </div>
     </div>
   );

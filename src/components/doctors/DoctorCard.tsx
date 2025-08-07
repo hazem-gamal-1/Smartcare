@@ -64,7 +64,7 @@ const DoctorCard = ({ doctor }: { doctor: Doctor }) => {
               <div className="flex gap-3 pt-2">
                 <Button
                   className="flex-1 group-hover:shadow-lg transition-all duration-300"
-                  onClick={(e) => {
+                  onClick={() => {
                     handleNavigation(
                       `/specialties/${specialtyId}/${doctor.id}`
                     );
@@ -76,7 +76,7 @@ const DoctorCard = ({ doctor }: { doctor: Doctor }) => {
                 <Button
                   variant="outline"
                   className="flex-1 group-hover:border-primary group-hover:text-primary transition-all duration-300"
-                  onClick={(e) => {
+                  onClick={() => {
                     handleNavigation(
                       `/booking/${doctor.id}`
                     );
