@@ -306,7 +306,12 @@ export default function DoctorProfile() {
 
                 {/* Contact Options */}
                 <div className="space-y-3 h-25">
-                  <Button className="w-full" onClick={() => {}}>
+                  <Button
+                    className="w-full"
+                    onClick={() => {
+                      handleNavigation(`/specialties/${[specialtyId]}/${id}/booking`);
+                    }}
+                  >
                     <Calendar className="h-4 w-4 mr-2" />
                     Book Appointment
                   </Button>
