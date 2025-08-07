@@ -617,7 +617,7 @@ export default function AppointmentBooking() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button
             onClick={() => {
-              () => handleNavigation("/dashboard");
+              handleNavigation("/dashboard");
             }}
           >
             Go to Dashboard
