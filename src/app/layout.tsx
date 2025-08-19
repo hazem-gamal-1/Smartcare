@@ -15,9 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AI-Clinic",
+  title: "Smartcare",
   description:
-    "AI-Clinic is a modern healthcare platform connecting patients with doctors and AI-powered tools. Book appointments, analyze symptoms, and access smart medical services in a clean, mobile-friendly interface.",
+    "Smartcare is a modern healthcare platform connecting patients with doctors and AI-powered tools. Book appointments, analyze symptoms, and access smart medical services in a clean, mobile-friendly interface.",
 };
 
 export default function RootLayout({

@@ -10,7 +10,7 @@ export default function AboutPage() {
           <div className="text-center mb-16">
             <div className="inline-flex items-center space-x-2 bg-primary/10 rounded-full px-4 py-2 mb-6">
               <span className="text-sm font-medium text-primary">
-                About AI-Clinic
+                About Smartcare
               </span>
             </div>
             <h1 className="text-4xl lg:text-5xl font-bold font-[Plus_Jakarta_Sans] mb-6">
@@ -32,7 +32,7 @@ export default function AboutPage() {
                 </h2>
                 <p className="text-muted-foreground leading-relaxed mb-4">
                   We believe everyone deserves access to quality healthcare.
-                  AI-Clinic combines cutting-edge artificial intelligence with
+                  Smartcare combines cutting-edge artificial intelligence with
                   experienced medical professionals to provide accessible,
                   reliable health insights and consultations.
                 </p>
@@ -113,7 +113,7 @@ export default function AboutPage() {
               Ready to Transform Your Healthcare?
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Join thousands of patients who trust AI-Clinic for their
+              Join thousands of patients who trust Smartcare for their
               healthcare needs. Experience the future of medicine today.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

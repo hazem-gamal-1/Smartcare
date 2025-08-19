@@ -12,7 +12,7 @@ export default function ContactPage() {
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Have questions? We&apos;re here to help. Reach out to our support team
-              for assistance with AI-Clinic.
+              for assistance with Smartcare.
             </p>
           </div>
 

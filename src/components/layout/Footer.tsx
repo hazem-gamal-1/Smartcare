@@ -26,7 +26,7 @@ export default function Footer() {
                 <Stethoscope className="h-5 w-5 text-primary-foreground" />
               </div>
               <span className="text-xl font-bold font-[Plus_Jakarta_Sans] text-foreground">
-                AI-Clinic
+                Smartcare
               </span>
             </div>
             <p className="text-muted-foreground mb-6 max-w-md">
@@ -147,7 +147,7 @@ export default function Footer() {
         <div className="border-t mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           {/* Left side: Copyright */}
           <p className="text-sm text-muted-foreground mb-4 md:mb-0">
-            © 2025 AI-Clinic. All rights reserved.
+            © 2025 Smartcare. All rights reserved.
           </p>
 
           {/* Right side: Built by + social links */}

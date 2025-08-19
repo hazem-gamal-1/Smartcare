@@ -41,7 +41,7 @@ export default function Navigation() {
               <Stethoscope className="h-5 w-5 text-primary-foreground" />
             </div>
             <span className="text-xl font-bold font-[Plus_Jakarta_Sans] text-foreground">
-              AI-Clinic
+              Smartcare
             </span>
           </div>
 
