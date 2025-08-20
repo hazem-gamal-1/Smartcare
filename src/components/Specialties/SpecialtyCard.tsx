@@ -55,17 +55,6 @@ export default function SpecialtyCard({
               {icon}
             </div>
           </div>
-
-          {doctorCount && (
-            <div className="text-right">
-              <div className="bg-white/15 backdrop-blur-sm border border-white/25 rounded-lg px-3 py-2 group-hover:bg-white/25 transition-all duration-300">
-                <p className="text-white text-lg font-bold leading-none">
-                  {doctorCount}
-                </p>
-                <p className="text-white/90 text-xs">doctors</p>
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Bottom Content */}

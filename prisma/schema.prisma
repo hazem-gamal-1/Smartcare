@@ -7,7 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Specialty {
   id          String   @id @default(cuid())
   title       String
@@ -18,32 +17,32 @@ model Specialty {
 }
 
 model Doctor {
-  id                String   @id @default(cuid())
-  name              String
-  title             String
-  specialtyId       String
-  specialty         Specialty @relation(fields: [specialtyId], references: [id])
-  experience        String
-  location          String
-  imageUrl          String
-  bio               String
-  appointments      Appointment[]
-  education         Json?
-  certifications    Json?
-  languages         Json?
-  stats             Json?
+  id             String         @id @default(cuid())
+  name           String
+  title          String
+  specialtyId    String
+  specialty      Specialty      @relation(fields: [specialtyId], references: [id])
+  experience     String
+  location       String
+  imageUrl       String
+  bio            String
+  appointments   Appointment[]
+  education      Json?
+  certifications Json?
+  languages      Json?
+  stats          Json?
+  Availability   Availability[]
 }
 
 model Appointment {
-  id                 Int      @id @default(autoincrement())
-  doctor             Doctor   @relation(fields: [doctorId], references: [id])
-  doctorId           String  
-  userId             String   
-  date               DateTime
-  time               String
+  id           Int            @id @default(autoincrement())
+  doctor       Doctor         @relation(fields: [doctorId], references: [id])
+  doctorId     String
+  userId       String
+  date         DateTime
+  time         String
+  Availability Availability[]
 }
-
-
 
 model AITool {
   id          String @id @default(cuid())
@@ -51,4 +50,16 @@ model AITool {
   description String
   category    String
   imageUrl    String
+}
+
+model Availability {
+  id       String   @id @default(cuid())
+  doctor   Doctor   @relation(fields: [doctorId], references: [id])
+  doctorId String
+  date     DateTime
+  time     String
+  isBooked Boolean  @default(false)
+
+  appointment   Appointment? @relation(fields: [appointmentId], references: [id])
+  appointmentId Int?
 }
