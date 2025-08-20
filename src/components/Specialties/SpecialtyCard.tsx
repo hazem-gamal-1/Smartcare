@@ -19,7 +19,6 @@ export default function SpecialtyCard({
   icon,
   onClick,
   buttonText = "Find Specialists",
-  doctorCount,
 }: SpecialtyCardProps) {
   return (
     <Card
