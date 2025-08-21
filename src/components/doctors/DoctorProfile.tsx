@@ -31,12 +31,6 @@ interface DoctorWithSpecialty extends Doctor {
   specialty: Specialty;
   languages: string[];
   certifications: string[];
-  stats: {
-    totalPatients: number;
-    yearsExperience: number;
-    successRate: number;
-    avgRating: number;
-  };
   education: Education[];
 }
 
@@ -127,40 +121,6 @@ export default function DoctorProfile() {
                     </div>
 
                     {/* Quick Stats */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      <div className="text-center p-3 bg-muted/50 rounded-lg">
-                        <div className="text-2xl font-bold text-primary">
-                          {doctor.stats.yearsExperience}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          Years Exp.
-                        </div>
-                      </div>
-                      <div className="text-center p-3 bg-muted/50 rounded-lg">
-                        <div className="text-2xl font-bold text-primary">
-                          {doctor.stats.totalPatients}+
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          Patients
-                        </div>
-                      </div>
-                      <div className="text-center p-3 bg-muted/50 rounded-lg">
-                        <div className="text-2xl font-bold text-primary">
-                          {doctor.stats.successRate}%
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          Success Rate
-                        </div>
-                      </div>
-                      <div className="text-center p-3 bg-muted/50 rounded-lg">
-                        <div className="text-2xl font-bold text-primary">
-                          {doctor.stats.avgRating}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          Rating
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -246,9 +206,6 @@ export default function DoctorProfile() {
                             <p className="text-muted-foreground">
                               {edu.institution}
                             </p>
-                            <p className="text-sm text-muted-foreground">
-                              Graduated {edu.year}
-                            </p>
                           </div>
                         </div>
                       ))}
@@ -309,7 +266,9 @@ export default function DoctorProfile() {
                   <Button
                     className="w-full"
                     onClick={() => {
-                      handleNavigation(`/specialties/${[specialtyId]}/${id}/booking`);
+                      handleNavigation(
+                        `/specialties/${[specialtyId]}/${id}/booking`
+                      );
                     }}
                   >
                     <Calendar className="h-4 w-4 mr-2" />

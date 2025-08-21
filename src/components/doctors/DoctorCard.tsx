@@ -3,7 +3,7 @@ import React from "react";
 import { Card, CardContent } from "../ui/Card";
 import { Button } from "../ui/Button";
 import { ImageWithFallback } from "../ui/ImageWithFallback";
-import { Calendar, MapPin, Award, User } from "lucide-react";
+import { Calendar, MapPin, User } from "lucide-react";
 import { Doctor } from "@prisma/client";
 import { useHandleNavigation } from "@/hooks/useHandleNavigation";
 import { useParams } from "next/navigation";
@@ -44,10 +44,6 @@ const DoctorCard = ({ doctor }: { doctor: Doctor }) => {
                 <p className="text-primary font-medium">{doctor.title}</p>
 
                 <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-                  <div className="flex items-center">
-                    <Award className="h-4 w-4 mr-1" />
-                    <span>{doctor.experience}</span>
-                  </div>
                   <div className="flex items-center">
                     <MapPin className="h-4 w-4 mr-1" />
                     <span>{doctor.location}</span>

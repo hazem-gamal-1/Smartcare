@@ -7,6 +7,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Patient {
+  id           String        @id // Clerk userId
+  name         String
+  email        String
+  phone        String?
+  imageUrl     String?
+  appointments Appointment[]
+}
+
 model Specialty {
   id          String   @id @default(cuid())
   title       String
@@ -17,12 +26,11 @@ model Specialty {
 }
 
 model Doctor {
-  id             String         @id @default(cuid())
+  id             String        @id // store Clerk userId
   name           String
   title          String
   specialtyId    String
-  specialty      Specialty      @relation(fields: [specialtyId], references: [id])
-  experience     String
+  specialty      Specialty     @relation(fields: [specialtyId], references: [id])
   location       String
   imageUrl       String
   bio            String
@@ -30,18 +38,17 @@ model Doctor {
   education      Json?
   certifications Json?
   languages      Json?
-  stats          Json?
-  Availability   Availability[]
 }
 
 model Appointment {
-  id           Int            @id @default(autoincrement())
-  doctor       Doctor         @relation(fields: [doctorId], references: [id])
-  doctorId     String
-  userId       String
-  date         DateTime
-  time         String
-  Availability Availability[]
+  id        Int      @id @default(autoincrement())
+  doctor    Doctor   @relation(fields: [doctorId], references: [id])
+  doctorId  String
+  userId    String
+  date      DateTime
+  time      String
+  Patient   Patient? @relation(fields: [patientId], references: [id])
+  patientId String?
 }
 
 model AITool {
@@ -50,16 +57,4 @@ model AITool {
   description String
   category    String
   imageUrl    String
-}
-
-model Availability {
-  id       String   @id @default(cuid())
-  doctor   Doctor   @relation(fields: [doctorId], references: [id])
-  doctorId String
-  date     DateTime
-  time     String
-  isBooked Boolean  @default(false)
-
-  appointment   Appointment? @relation(fields: [appointmentId], references: [id])
-  appointmentId Int?
 }

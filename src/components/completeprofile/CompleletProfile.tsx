@@ -15,24 +15,25 @@ import {
 import { Textarea } from "../ui/Textarea";
 import { User, Stethoscope } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+type Education = { degree: string; institution: string; year: string };
 
 type DoctorFormData = {
   name: string;
   title: string;
   specialtyId: string;
-  experience: string;
   location: string;
   bio: string;
-  education: string[];
+  education: Education[];
   certifications: string[];
   languages: string[];
-  availability: { date: string; time: string }[];
+  phone: string;
 };
 
-
-
 export default function CompleteProfilePage() {
+  const router = useRouter();
   const { user } = useUser();
+
   const [userType, setUserType] = useState<"patient" | "doctor">("patient");
   const [isLoading, setIsLoading] = useState(false);
   const [specialties, setSpecialties] = useState<
@@ -42,21 +43,33 @@ export default function CompleteProfilePage() {
     name: "",
     title: "",
     specialtyId: "",
-    experience: "",
     location: "",
     bio: "",
     education: [],
     certifications: [],
     languages: [],
-    availability: [],
+    phone: "",
   });
 
+  // Redirect if profile already complete
+  useEffect(() => {
+    if (user?.unsafeMetadata?.completeProfile) router.push("/");
+  }, [user, router]);
+
+  // Fetch specialties for doctor select
   useEffect(() => {
     fetch("/api/specialties")
       .then((res) => res.json())
-      .then((data) => setSpecialties(data))
+      .then(setSpecialties)
       .catch(console.error);
   }, []);
+
+  // Pre-fill name for patients
+  useEffect(() => {
+    if (user && userType === "patient") {
+      setFormData((prev) => ({ ...prev, name: user.fullName || "" }));
+    }
+  }, [user, userType]);
 
   const handleInputChange = <K extends keyof DoctorFormData>(
     field: K,
@@ -65,11 +78,11 @@ export default function CompleteProfilePage() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  // Array helpers
   const addArrayItem = (
     field: "education" | "certifications" | "languages",
     value: string
   ) => {
+    if (!value.trim()) return;
     handleInputChange(field, [
       ...formData[field],
       value,
@@ -88,23 +101,17 @@ export default function CompleteProfilePage() {
     );
   };
 
-  const addAvailability = (date: string, time: string) => {
-    handleInputChange("availability", [
-      ...formData.availability,
-      { date, time },
-    ]);
-  };
-
-  const removeAvailability = (index: number) => {
-    handleInputChange(
-      "availability",
-      formData.availability.filter((_, i) => i !== index)
-    );
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return alert("User not found");
+
+    // Validation
+    if (userType === "doctor" && (!formData.name || !formData.specialtyId)) {
+      return alert("Please fill in all required fields (name & specialty).");
+    }
+    if (userType === "patient" && !formData.phone) {
+      return alert("Please provide a phone number.");
+    }
 
     setIsLoading(true);
     try {
@@ -114,21 +121,38 @@ export default function CompleteProfilePage() {
       });
 
       if (userType === "doctor") {
+        // Create doctor in database
         const res = await fetch("/api/doctors", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...formData, imageUrl: user.imageUrl || "" }),
+          body: JSON.stringify({
+            id: user.id,
+            ...formData,
+            imageUrl: user.imageUrl || "",
+          }),
         });
         if (!res.ok) throw new Error("Failed to create doctor");
-        await res.json();
+      } else {
+        // Create patient in database
+        const res = await fetch("/api/patients", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: user.id,
+            name: formData.name,
+            email: user.emailAddresses[0]?.emailAddress || "",
+            phone: formData.phone,
+            imageUrl: user.imageUrl || "",
+          }),
+        });
+        if (!res.ok) throw new Error("Failed to create patient");
       }
-
-      alert("Profile completed successfully!");
     } catch (err) {
       console.error(err);
-      alert("Error completing profile. Please try again.");
+      alert("Error saving profile");
     } finally {
       setIsLoading(false);
+      router.push("/");
     }
   };
 
@@ -153,7 +177,7 @@ export default function CompleteProfilePage() {
               <UserTypeSelector userType={userType} setUserType={setUserType} />
 
               <form onSubmit={handleSubmit} className="space-y-6 mt-4">
-                {userType === "doctor" && (
+                {userType === "doctor" ? (
                   <>
                     <InputSection
                       label="Full Name"
@@ -176,28 +200,36 @@ export default function CompleteProfilePage() {
                       onChange={(v) => handleInputChange("specialtyId", v)}
                     />
                     <InputSection
-                      label="Years of Experience"
-                      type="number"
-                      value={formData.experience}
-                      onChange={(v) => handleInputChange("experience", v)}
-                    />
-                    <InputSection
                       label="Location"
                       value={formData.location}
                       onChange={(v) => handleInputChange("location", v)}
+                    />
+                    <InputSection
+                      label="Phone"
+                      value={formData.phone}
+                      onChange={(v) => handleInputChange("phone", v)}
                     />
                     <TextareaSection
                       label="Short Bio"
                       value={formData.bio}
                       onChange={(v) => handleInputChange("bio", v)}
                     />
-
-                    <ArrayFieldSection
-                      label="Education"
+                    <EducationFieldSection
                       items={formData.education}
-                      addItem={(v) => addArrayItem("education", v)}
-                      removeItem={(i) => removeArrayItem("education", i)}
+                      addItem={(v) =>
+                        handleInputChange("education", [
+                          ...formData.education,
+                          v,
+                        ])
+                      }
+                      removeItem={(i) =>
+                        handleInputChange(
+                          "education",
+                          formData.education.filter((_, idx) => idx !== i)
+                        )
+                      }
                     />
+
                     <ArrayFieldSection
                       label="Certifications"
                       items={formData.certifications}
@@ -210,11 +242,18 @@ export default function CompleteProfilePage() {
                       addItem={(v) => addArrayItem("languages", v)}
                       removeItem={(i) => removeArrayItem("languages", i)}
                     />
-
-                    <AvailabilitySection
-                      availability={formData.availability}
-                      addAvailability={addAvailability}
-                      removeAvailability={removeAvailability}
+                  </>
+                ) : (
+                  <>
+                    <InputSection
+                      label="Full Name"
+                      value={formData.name}
+                      onChange={(v) => handleInputChange("name", v)}
+                    />
+                    <InputSection
+                      label="Phone"
+                      value={formData.phone}
+                      onChange={(v) => handleInputChange("phone", v)}
                     />
                   </>
                 )}
@@ -250,12 +289,14 @@ function UserTypeSelector({
       <div className="grid grid-cols-2 gap-3 mt-2">
         <Button
           variant={userType === "patient" ? "default" : "outline"}
+          type="button"
           onClick={() => setUserType("patient")}
         >
           <User className="h-4 w-4 mr-2" /> Patient
         </Button>
         <Button
           variant={userType === "doctor" ? "default" : "outline"}
+          type="button"
           onClick={() => setUserType("doctor")}
         >
           <Stethoscope className="h-4 w-4 mr-2" /> Doctor
@@ -356,7 +397,7 @@ function ArrayFieldSection({
       {items.map((item, i) => (
         <div key={i} className="flex items-center gap-2">
           <Input value={item} readOnly />
-          <Button variant="outline" onClick={() => removeItem(i)}>
+          <Button type="button" variant="outline" onClick={() => removeItem(i)}>
             Remove
           </Button>
         </div>
@@ -368,6 +409,7 @@ function ArrayFieldSection({
           placeholder={`Add ${label.toLowerCase()}`}
         />
         <Button
+          type="button"
           onClick={() => {
             addItem(input);
             setInput("");
@@ -380,48 +422,57 @@ function ArrayFieldSection({
   );
 }
 
-function AvailabilitySection({
-  availability,
-  addAvailability,
-  removeAvailability,
+function EducationFieldSection({
+  items,
+  addItem,
+  removeItem,
 }: {
-  availability: { date: string; time: string }[];
-  addAvailability: (date: string, time: string) => void;
-  removeAvailability: (i: number) => void;
+  items: Education[];
+  addItem: (v: Education) => void;
+  removeItem: (i: number) => void;
 }) {
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
+  const [degree, setDegree] = useState("");
+  const [institution, setInstitution] = useState("");
+  const [year, setYear] = useState("");
+
+  const handleAdd = () => {
+    if (!degree || !institution || !year) return;
+    addItem({ degree, institution, year });
+    setDegree("");
+    setInstitution("");
+    setYear("");
+  };
 
   return (
     <div className="space-y-2">
-      <Label>Availability</Label>
-      {availability.map((slot, i) => (
+      <Label>Education</Label>
+      {items.map((item, i) => (
         <div key={i} className="flex items-center gap-2">
-          <Input value={slot.date} readOnly type="date" />
-          <Input value={slot.time} readOnly type="time" />
-          <Button variant="outline" onClick={() => removeAvailability(i)}>
+          <span>
+            {item.degree}, {item.institution}, {item.year}
+          </span>
+          <Button type="button" variant="outline" onClick={() => removeItem(i)}>
             Remove
           </Button>
         </div>
       ))}
       <div className="flex gap-2">
         <Input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
+          value={degree}
+          onChange={(e) => setDegree(e.target.value)}
+          placeholder="Degree"
         />
         <Input
-          type="time"
-          value={time}
-          onChange={(e) => setTime(e.target.value)}
+          value={institution}
+          onChange={(e) => setInstitution(e.target.value)}
+          placeholder="Institution"
         />
-        <Button
-          onClick={() => {
-            addAvailability(date, time);
-            setDate("");
-            setTime("");
-          }}
-        >
+        <Input
+          value={year}
+          onChange={(e) => setYear(e.target.value)}
+          placeholder="Year"
+        />
+        <Button type="button" onClick={handleAdd}>
           Add
         </Button>
       </div>
