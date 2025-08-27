@@ -29,7 +29,6 @@ export function ImageWithFallback({
       height={300}
       {...rest}
       onError={() => setImgSrc(ERROR_IMG_SRC)}
-      unoptimized
     />
   );
 }
