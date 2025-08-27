@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -21,7 +21,6 @@ model Specialty {
   title       String
   description String
   imageUrl    String
-  doctorCount Int
   doctors     Doctor[]
 }
 

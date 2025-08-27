@@ -85,7 +85,6 @@ const MedicalSpecialtiesSection = () => {
                 description={specialty.description}
                 imageUrl={specialty.imageUrl}
                 icon={iconMap[specialty.title]}
-                doctorCount={specialty.doctorCount}
                 onClick={() => {
                   handleNavigation("/specialties");
                 }}

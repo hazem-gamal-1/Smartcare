@@ -100,7 +100,6 @@ const SpecialtiesPage = () => {
                 description={specialty.description}
                 imageUrl={specialty.imageUrl}
                 icon={iconMap[specialty.title]}
-                doctorCount={specialty.doctorCount}
                 buttonText="View Doctors"
                 onClick={() => {
                   router.push(`/specialties/${specialty.id}`);

@@ -9,7 +9,6 @@ interface SpecialtyCardProps {
   icon: React.ReactNode;
   onClick: () => void;
   buttonText?: string;
-  doctorCount?: number;
 }
 
 export default function SpecialtyCard({
