@@ -21,6 +21,10 @@ interface ClassificationResult {
   confidence: number;
 }
 
+export const metadata = {
+  title: "tool",
+};
+
 export default function CVToolPage() {
   const { id } = useParams();
   const [tool, setTool] = useState<Tool | null>(null);
