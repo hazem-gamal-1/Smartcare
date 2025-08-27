@@ -6,7 +6,6 @@ import { ArrowRight, Sparkles } from "lucide-react";
 interface AIToolCardProps {
   title: string;
   description: string;
-  icon: React.ReactNode;
   onClick: () => void;
   category?: string;
   isComingSoon?: boolean;
@@ -16,27 +15,12 @@ interface AIToolCardProps {
 export default function AIToolCard({
   title,
   description,
-  icon,
   onClick,
   category,
   isComingSoon = false,
   imageUrl,
 }: AIToolCardProps) {
-  // Default images for AI tools if not provided
-  const getDefaultImage = (toolTitle: string) => {
-    switch (toolTitle.toLowerCase()) {
-      case "skin health analyzer":
-        return "https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400&h=300&fit=crop";
-      case "symptom checker":
-        return "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=300&fit=crop";
-      case "report summarizer":
-        return "https://images.unsplash.com/photo-1551076805-e1869033e561?w=400&h=300&fit=crop";
-      default:
-        return "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=400&h=300&fit=crop";
-    }
-  };
-
-  const finalImageUrl = imageUrl || getDefaultImage(title);
+  const finalImageUrl = imageUrl;
 
   return (
     <Card
@@ -73,15 +57,6 @@ export default function AIToolCard({
             </span>
           </div>
         )}
-
-        {/* Icon in center of image */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-md text-white group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-500 group-hover:scale-125 shadow-lg border border-white/30">
-            <div className="transform group-hover:scale-110 transition-transform duration-300">
-              {icon}
-            </div>
-          </div>
-        </div>
 
         {/* Floating decorative elements */}
         <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-700 delay-200">

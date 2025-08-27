@@ -2,14 +2,10 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "../ui/Button";
 import AIToolCard from "./AIToolCard";
-import { Camera, MessageSquare, Zap, ChevronRight } from "lucide-react";
+import { Zap, ChevronRight } from "lucide-react";
 import { useHandleNavigation } from "@/hooks/useHandleNavigation";
 import { AITool } from "@prisma/client";
 import Loader from "../ui/Loader";
-const iconMap: Record<string, React.ReactNode> = {
-  Dermatology: <Camera className="h-5 w-5" />,
-  Pharmacy: <MessageSquare className="h-5 w-5" />,
-};
 export default function AIToolsPage() {
   const { handleNavigation } = useHandleNavigation();
   const [aiTools, setAiTools] = useState<AITool[]>([]);
@@ -65,7 +61,6 @@ export default function AIToolsPage() {
                 key={index}
                 title={tool.title}
                 description={tool.description}
-                icon={iconMap[tool.category]}
                 category={tool.category}
                 imageUrl={tool.imageUrl}
                 onClick={() => {}}
