@@ -6,11 +6,12 @@ import { Zap, ChevronRight } from "lucide-react";
 import { useHandleNavigation } from "@/hooks/useHandleNavigation";
 import { AITool } from "@prisma/client";
 import Loader from "../ui/Loader";
+import { useRouter } from "next/navigation";
 export default function AIToolsPage() {
   const { handleNavigation } = useHandleNavigation();
   const [aiTools, setAiTools] = useState<AITool[]>([]);
   const [loading, setLoading] = useState<boolean>(true); // <- loading state
-
+  const router = useRouter();
   useEffect(() => {
     const fetchSpecialties = async () => {
       try {
@@ -63,7 +64,9 @@ export default function AIToolsPage() {
                 description={tool.description}
                 category={tool.category}
                 imageUrl={tool.imageUrl}
-                onClick={() => {}}
+                onClick={() => {
+                  router.push(`/ai-tools/${tool.id}`);
+                }}
               />
             ))}
           </div>
