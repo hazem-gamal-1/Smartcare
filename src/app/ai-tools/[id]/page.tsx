@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
 import Loader from "@/components/ui/Loader";
 import Image from "next/image";
+import ChatBot from "@/components/ai-tools/Chabot";
 
 interface Tool {
   id: string;
@@ -70,6 +71,8 @@ export default function CVToolPage() {
     );
   }
 
+  if (tool.title === "Medical Chatbot") return <ChatBot></ChatBot>;
+
   return (
     <div className="min-h-screen bg-background py-12">
       <div className="container mx-auto px-4 max-w-4xl">
@@ -120,7 +123,7 @@ export default function CVToolPage() {
               disabled={!selectedImage}
               onClick={handleClassify}
             >
-              Classify Image
+              Analyze Image
             </Button>
           </CardContent>
         </Card>
