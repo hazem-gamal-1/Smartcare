@@ -71,6 +71,7 @@ export default function ChatBot() {
 
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
+      console.log(error);
       const errorMessage: Message = {
         role: "bot",
         content: "⚠️ Server error. Please try again later.",
