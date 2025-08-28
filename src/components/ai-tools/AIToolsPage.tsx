@@ -1,5 +1,6 @@
 "use client";
-import React, { useState, useEffect, useCallback } from "react";
+
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { Button } from "../ui/Button";
 import AIToolCard from "./AIToolCard";
 import { Zap, ChevronRight } from "lucide-react";
@@ -11,9 +12,10 @@ import { useRouter } from "next/navigation";
 export default function AIToolsPage() {
   const { handleNavigation } = useHandleNavigation();
   const [aiTools, setAiTools] = useState<AITool[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
+  // Fetch AI tools
   useEffect(() => {
     const fetchTools = async () => {
       try {
@@ -36,8 +38,27 @@ export default function AIToolsPage() {
     [router]
   );
 
+  // Memoize cards for performance
+  const toolCards = useMemo(() => {
+    return aiTools.map((tool) => (
+      <AIToolCard
+        key={tool.id}
+        title={tool.title}
+        description={tool.description}
+        category={tool.category}
+        imageUrl={tool.imageUrl}
+        onClick={() => handleToolClick(tool.id)}
+      />
+    ));
+  }, [aiTools, handleToolClick]);
+
+  // Show full-page loader while fetching
   if (loading) {
-    return <Loader></Loader>;
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-background">
+        <Loader />
+      </div>
+    );
   }
 
   return (
@@ -63,16 +84,7 @@ export default function AIToolsPage() {
 
         {/* Tools Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {aiTools.map((tool) => (
-            <AIToolCard
-              key={tool.id}
-              title={tool.title}
-              description={tool.description}
-              category={tool.category}
-              imageUrl={tool.imageUrl}
-              onClick={() => handleToolClick(tool.id)}
-            />
-          ))}
+          {toolCards}
         </div>
 
         {/* CTA */}

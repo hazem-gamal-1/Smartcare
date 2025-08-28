@@ -21,7 +21,7 @@ function AIToolCard({
 }: AIToolCardProps) {
   return (
     <Card
-      className="group relative overflow-hidden border hover:shadow-2xl transition-transform duration-300 hover:-translate-y-3 cursor-pointer rounded-2xl bg-card min-h-[380px] will-change-transform"
+      className="group relative overflow-hidden border hover:shadow-2xl transition-transform duration-300 hover:-translate-y-3 cursor-pointer rounded-2xl bg-card min-h-[380px]"
       onClick={onClick}
     >
       {/* Background Image */}
@@ -32,10 +32,11 @@ function AIToolCard({
             alt={title}
             fill
             loading="lazy"
+            sizes="(max-width: 768px) 100vw, 33vw"
             className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-all duration-500" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-all duration-300" />
       </div>
 
       {/* Floating Badges */}
@@ -81,9 +82,17 @@ function AIToolCard({
       </CardContent>
 
       {/* Bottom accent line */}
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/50 via-secondary/50 to-primary/50 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-center" />
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/50 via-secondary/50 to-primary/50 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-center" />
     </Card>
   );
 }
 
-export default React.memo(AIToolCard);
+// Memoize with comparator for performance
+export default React.memo(
+  AIToolCard,
+  (prev, next) =>
+    prev.title === next.title &&
+    prev.description === next.description &&
+    prev.category === next.category &&
+    prev.imageUrl === next.imageUrl
+);
