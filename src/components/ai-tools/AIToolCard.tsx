@@ -2,22 +2,23 @@ import React from "react";
 import { Card } from "../ui/Card";
 import { Button } from "../ui/Button";
 import { ImageWithFallback } from "../ui/ImageWithFallback";
-import { Sparkles } from "lucide-react";
-
+import { Sparkle } from "lucide-react";
 interface AIToolCardProps {
   title: string;
-  description: string;
+  description?: string;
+  imageUrl: string;
   onClick: () => void;
+  buttonText?: string;
   category?: string;
-  imageUrl?: string;
 }
 
 function AIToolCard({
   title,
   description,
-  onClick,
-  category,
   imageUrl,
+  onClick,
+  buttonText = "Try Now",
+  category,
 }: AIToolCardProps) {
   return (
     <Card
@@ -27,7 +28,7 @@ function AIToolCard({
       {/* Background Image */}
       <div className="absolute inset-0">
         <ImageWithFallback
-          src={imageUrl || ""}
+          src={imageUrl}
           alt={title}
           className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
           fill
@@ -56,12 +57,12 @@ function AIToolCard({
       {/* Content */}
       <div className="relative z-10 h-full flex flex-col p-6">
         <div className="flex justify-between items-start mb-auto">
-          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm border border-white/30 text-white group-hover:bg-primary group-hover:border-primary group-hover:text-primary-foreground transition-all duration-300 group-hover:scale-110 shadow-lg">
-            <Sparkles className="h-5 w-5" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm border border-white/30 text-white group-hover:bg-primary group-hover:border-primary group-hover:text-primary-foreground transition-all duration-300 group-hover:scale-110 shadow-lg">
+            <Sparkle></Sparkle>
           </div>
-          {/* Category badge */}
+
           {category && (
-            <div className="text-xs font-semibold text-white px-3 py-2 rounded-full border border-white/20 bg-white/20 backdrop-blur-sm group-hover:bg-primary/80 group-hover:border-primary/60 transition-colors duration-300">
+            <div className="inline-block text-sm font-semibold text-white bg-transparent px-2 py-1 rounded-full border border-primary/30  group-hover:bg-primary group-hover:border-primary group-hover:text-primary-foreground transition-all duration-300 group-hover:scale-110">
               {category}
             </div>
           )}
@@ -71,16 +72,18 @@ function AIToolCard({
           <h3 className="text-white font-[Plus_Jakarta_Sans] font-bold text-xl leading-tight">
             {title}
           </h3>
-          <p className="text-white/90 text-sm leading-relaxed line-clamp-2">
-            {description}
-          </p>
+          {description && (
+            <p className="text-white/90 text-sm leading-relaxed line-clamp-2">
+              {description}
+            </p>
+          )}
 
           <Button
             size="sm"
             className="w-full bg-white/20 backdrop-blur-sm border border-white/30 text-white hover:bg-white hover:text-primary transition-all duration-300 py-2.5 rounded-lg font-medium group-hover:shadow-lg transform group-hover:scale-[1.02]"
             variant="outline"
           >
-            Try Now
+            {buttonText}
             <svg
               className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform duration-300"
               fill="none"
