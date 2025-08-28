@@ -9,7 +9,6 @@ interface AIToolCardProps {
   description: string;
   onClick: () => void;
   category?: string;
-  isComingSoon?: boolean;
   imageUrl?: string;
 }
 
@@ -18,12 +17,11 @@ function AIToolCard({
   description,
   onClick,
   category,
-  isComingSoon = false,
   imageUrl,
 }: AIToolCardProps) {
   return (
     <Card
-      className="group relative overflow-hidden border hover:shadow-2xl transition-transform duration-700 hover:-translate-y-3 cursor-pointer rounded-2xl bg-card min-h-[380px] will-change-transform,box-shadow"
+      className="group relative overflow-hidden border hover:shadow-2xl transition-transform duration-300 hover:-translate-y-3 cursor-pointer rounded-2xl bg-card min-h-[380px] will-change-transform"
       onClick={onClick}
     >
       {/* Background Image */}
@@ -33,10 +31,11 @@ function AIToolCard({
             src={imageUrl}
             alt={title}
             fill
-            className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
+            loading="lazy"
+            className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent group-hover:from-black/70 transition-all duration-500"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-all duration-500" />
       </div>
 
       {/* Floating Badges */}
@@ -57,22 +56,6 @@ function AIToolCard({
         </div>
       </div>
 
-      {/* Floating decorative elements */}
-      <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-200">
-        <div className="flex space-x-1">
-          {[0.6, 0.4, 0.2].map((opacity, idx) => (
-            <div
-              key={idx}
-              className="w-1.5 h-1.5 rounded-full animate-pulse"
-              style={{
-                backgroundColor: `rgba(255,255,255,${opacity})`,
-                animationDelay: `${idx * 100}ms`,
-              }}
-            />
-          ))}
-        </div>
-      </div>
-
       {/* Content */}
       <CardContent className="p-6 relative z-10 flex flex-col justify-between h-[calc(100%-12rem)]">
         <div className="space-y-4 flex-1">
@@ -84,27 +67,15 @@ function AIToolCard({
           </p>
         </div>
 
-        <div className="flex items-center justify-between pt-6 border-t border-border/50">
-          {isComingSoon && (
-            <span className="text-xs text-orange-600 bg-orange-100 dark:bg-orange-900/30 px-2 py-1 rounded-full mb-2 self-start">
-              Coming Soon
-            </span>
-          )}
+        <div className="flex items-center justify-end pt-6 border-t border-border/50">
           <Button
             size="sm"
-            variant={isComingSoon ? "outline" : "default"}
+            variant="default"
             onClick={onClick}
-            disabled={isComingSoon}
-            className={`font-medium px-6 py-2 rounded-xl transition-all duration-500 ${
-              !isComingSoon
-                ? "group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-lg transform group-hover:scale-105"
-                : "opacity-60"
-            }`}
+            className="font-medium px-6 py-2 rounded-xl transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-lg transform group-hover:scale-105"
           >
-            {isComingSoon ? "Available Soon" : "Try Now"}
-            {!isComingSoon && (
-              <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform duration-300" />
-            )}
+            Try Now
+            <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform duration-300" />
           </Button>
         </div>
       </CardContent>
@@ -115,11 +86,4 @@ function AIToolCard({
   );
 }
 
-export default React.memo(
-  AIToolCard,
-  (prev, next) =>
-    prev.title === next.title &&
-    prev.description === next.description &&
-    prev.imageUrl === next.imageUrl &&
-    prev.isComingSoon === next.isComingSoon
-);
+export default React.memo(AIToolCard);

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Button } from "../ui/Button";
 import AIToolCard from "./AIToolCard";
 import { Zap, ChevronRight } from "lucide-react";
@@ -11,10 +11,9 @@ import { useRouter } from "next/navigation";
 export default function AIToolsPage() {
   const { handleNavigation } = useHandleNavigation();
   const [aiTools, setAiTools] = useState<AITool[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
 
-  // Fetch tools
   useEffect(() => {
     const fetchTools = async () => {
       try {
@@ -30,7 +29,6 @@ export default function AIToolsPage() {
     fetchTools();
   }, []);
 
-  // Stable click handler
   const handleToolClick = useCallback(
     (id: string) => {
       router.push(`/ai-tools/${id}`);
@@ -38,23 +36,9 @@ export default function AIToolsPage() {
     [router]
   );
 
-  // Memoized cards
-  const toolCards = useMemo(
-    () =>
-      aiTools.map((tool) => (
-        <AIToolCard
-          key={tool.id}
-          title={tool.title}
-          description={tool.description}
-          category={tool.category}
-          imageUrl={tool.imageUrl}
-          onClick={() => handleToolClick(tool.id)}
-        />
-      )),
-    [aiTools, handleToolClick]
-  );
-
-  if (loading) return <Loader />;
+  if (loading) {
+    return <Loader></Loader>;
+  }
 
   return (
     <div className="min-h-screen bg-background py-16">
@@ -67,7 +51,7 @@ export default function AIToolsPage() {
               AI-Powered Health Tools
             </span>
           </div>
-          <h1 className="text-4xl lg:text-5xl font-bold font-[Plus_Jakarta_Sans] mb-6">
+          <h1 className="text-4xl lg:text-5xl font-bold mb-6">
             Advanced AI Health
             <span className="block text-primary">Analysis Tools</span>
           </h1>
@@ -79,12 +63,21 @@ export default function AIToolsPage() {
 
         {/* Tools Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {toolCards}
+          {aiTools.map((tool) => (
+            <AIToolCard
+              key={tool.id}
+              title={tool.title}
+              description={tool.description}
+              category={tool.category}
+              imageUrl={tool.imageUrl}
+              onClick={() => handleToolClick(tool.id)}
+            />
+          ))}
         </div>
 
         {/* CTA */}
         <div className="text-center bg-gradient-to-r from-primary/5 to-secondary/5 rounded-3xl p-12">
-          <h2 className="text-3xl font-bold font-[Plus_Jakarta_Sans] mb-6">
+          <h2 className="text-3xl font-bold mb-6">
             Need More Personalized Care?
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
