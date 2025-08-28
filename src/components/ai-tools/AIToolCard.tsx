@@ -2,6 +2,7 @@ import React from "react";
 import { Card, CardContent } from "../ui/Card";
 import { Button } from "../ui/Button";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { ImageWithFallback } from "../ui/ImageWithFallback";
 
 interface AIToolCardProps {
   title: string;
@@ -12,7 +13,7 @@ interface AIToolCardProps {
   imageUrl?: string;
 }
 
-export default function AIToolCard({
+function AIToolCard({
   title,
   description,
   onClick,
@@ -20,90 +21,85 @@ export default function AIToolCard({
   isComingSoon = false,
   imageUrl,
 }: AIToolCardProps) {
-  const finalImageUrl = imageUrl;
-
   return (
     <Card
-      className="group relative overflow-hidden border hover:shadow-2xl transition-all duration-700 hover:-translate-y-3 cursor-pointer rounded-2xl bg-card min-h-[380px]"
+      className="group relative overflow-hidden border hover:shadow-2xl transition-transform duration-700 hover:-translate-y-3 cursor-pointer rounded-2xl bg-card min-h-[380px] will-change-transform,box-shadow"
       onClick={onClick}
     >
-      {/* Background Image Section */}
+      {/* Background Image */}
       <div className="relative h-48 overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-110"
-          style={{
-            backgroundImage: `url(${finalImageUrl})`,
-          }}
-        />
-
-        {/* Gradient overlay on image */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent group-hover:from-black/70 transition-all duration-500"></div>
-
-        {/* Floating AI badge */}
-        <div className="absolute top-4 left-4">
-          <div className="bg-white/20 backdrop-blur-md border border-white/30 rounded-full px-3 py-1 group-hover:bg-primary/20 group-hover:border-primary/40 transition-all duration-300">
-            <span className="text-white text-xs font-semibold flex items-center">
-              <Sparkles className="h-3 w-3 mr-1" />
-              AI-Powered
-            </span>
-          </div>
-        </div>
-
-        {/* Category badge */}
-        {category && (
-          <div className="absolute top-4 right-4">
-            <span className="text-xs font-semibold text-white bg-black/40 backdrop-blur-sm px-3 py-2 rounded-full border border-white/20 group-hover:bg-primary/20 group-hover:border-primary/40 transition-all duration-300">
-              {category}
-            </span>
-          </div>
+        {imageUrl && (
+          <ImageWithFallback
+            src={imageUrl}
+            alt={title}
+            fill
+            className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
+          />
         )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent group-hover:from-black/70 transition-all duration-500"></div>
+      </div>
 
-        {/* Floating decorative elements */}
-        <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-700 delay-200">
-          <div className="flex space-x-1">
-            <div className="w-1.5 h-1.5 bg-white/60 rounded-full animate-pulse"></div>
-            <div className="w-1.5 h-1.5 bg-white/40 rounded-full animate-pulse delay-100"></div>
-            <div className="w-1.5 h-1.5 bg-white/20 rounded-full animate-pulse delay-200"></div>
-          </div>
+      {/* Floating Badges */}
+      {category && (
+        <div className="absolute top-4 right-4">
+          <span className="text-xs font-semibold text-white bg-black/40 backdrop-blur-sm px-3 py-2 rounded-full border border-white/20 group-hover:bg-primary/20 group-hover:border-primary/40 transition-all duration-300">
+            {category}
+          </span>
+        </div>
+      )}
+
+      <div className="absolute top-4 left-4">
+        <div className="bg-white/20 backdrop-blur-md border border-white/30 rounded-full px-3 py-1 group-hover:bg-primary/20 group-hover:border-primary/40 transition-all duration-300">
+          <span className="text-white text-xs font-semibold flex items-center">
+            <Sparkles className="h-3 w-3 mr-1" />
+            AI-Powered
+          </span>
         </div>
       </div>
 
-      {/* Content Section */}
+      {/* Floating decorative elements */}
+      <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-200">
+        <div className="flex space-x-1">
+          {[0.6, 0.4, 0.2].map((opacity, idx) => (
+            <div
+              key={idx}
+              className="w-1.5 h-1.5 rounded-full animate-pulse"
+              style={{
+                backgroundColor: `rgba(255,255,255,${opacity})`,
+                animationDelay: `${idx * 100}ms`,
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Content */}
       <CardContent className="p-6 relative z-10 flex flex-col justify-between h-[calc(100%-12rem)]">
         <div className="space-y-4 flex-1">
-          <div>
-            <h3 className="font-[Plus_Jakarta_Sans] font-bold text-xl text-card-foreground group-hover:text-primary transition-colors duration-300 line-clamp-2">
-              {title}
-            </h3>
-            <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3 mt-2">
-              {description}
-            </p>
-          </div>
+          <h3 className="font-[Plus_Jakarta_Sans] font-bold text-xl text-card-foreground group-hover:text-primary transition-colors duration-300 line-clamp-2">
+            {title}
+          </h3>
+          <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3 mt-2">
+            {description}
+          </p>
         </div>
 
-        {/* Action Section */}
         <div className="flex items-center justify-between pt-6 border-t border-border/50">
-          <div className="flex flex-col">
-            {isComingSoon && (
-              <span className="text-xs text-orange-600 bg-orange-100 dark:bg-orange-900/30 px-2 py-1 rounded-full mb-2 self-start">
-                Coming Soon
-              </span>
-            )}
-          </div>
-
+          {isComingSoon && (
+            <span className="text-xs text-orange-600 bg-orange-100 dark:bg-orange-900/30 px-2 py-1 rounded-full mb-2 self-start">
+              Coming Soon
+            </span>
+          )}
           <Button
             size="sm"
             variant={isComingSoon ? "outline" : "default"}
             onClick={onClick}
             disabled={isComingSoon}
-            className={`
-              font-medium px-6 py-2 rounded-xl transition-all duration-500
-              ${
-                !isComingSoon
-                  ? "group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-lg transform group-hover:scale-105 group-hover:shadow-primary/25"
-                  : "opacity-60"
-              }
-            `}
+            className={`font-medium px-6 py-2 rounded-xl transition-all duration-500 ${
+              !isComingSoon
+                ? "group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-lg transform group-hover:scale-105"
+                : "opacity-60"
+            }`}
           >
             {isComingSoon ? "Available Soon" : "Try Now"}
             {!isComingSoon && (
@@ -113,11 +109,17 @@ export default function AIToolCard({
         </div>
       </CardContent>
 
-      {/* Background decoration */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-
       {/* Bottom accent line */}
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/50 via-secondary/50 to-primary/50 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-center"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/50 via-secondary/50 to-primary/50 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-center" />
     </Card>
   );
 }
+
+export default React.memo(
+  AIToolCard,
+  (prev, next) =>
+    prev.title === next.title &&
+    prev.description === next.description &&
+    prev.imageUrl === next.imageUrl &&
+    prev.isComingSoon === next.isComingSoon
+);
