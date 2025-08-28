@@ -77,18 +77,6 @@ function AIToolCard({
     .trim()
     .replace(/\s+/g, " ");
 
-  // Simplified gradient overlay - no backdrop blur during scroll
-  const overlayClasses = `
-    absolute inset-0 transition-opacity duration-300
-    ${
-      isScrolling
-        ? "bg-black/50" // Solid overlay during scroll
-        : "bg-gradient-to-t from-black/60 via-black/20 to-transparent"
-    }
-  `
-    .trim()
-    .replace(/\s+/g, " ");
-
   // Badge classes optimized for scroll
   const badgeBaseClasses = `
     text-xs font-semibold text-white px-3 py-2 rounded-full border border-white/20
@@ -157,7 +145,6 @@ function AIToolCard({
             className={imageClasses}
             fill
           />
-          <div className={overlayClasses} />
         </div>
       )}
 
