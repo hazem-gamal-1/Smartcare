@@ -19,17 +19,8 @@ function AIToolCard({
   category,
   imageUrl,
 }: AIToolCardProps) {
-  // Prevent event bubbling and optimize click handling
+  // Stable click handler
   const handleClick = useCallback(
-    (e: React.MouseEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      onClick();
-    },
-    [onClick]
-  );
-
-  const handleButtonClick = useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
@@ -40,25 +31,25 @@ function AIToolCard({
 
   return (
     <Card
-      className="group relative overflow-hidden border hover:shadow-2xl transition-transform duration-300 hover:-translate-y-3 cursor-pointer rounded-2xl bg-card min-h-[380px]"
+      className="group relative overflow-hidden border hover:shadow-2xl transition-transform duration-300 hover:-translate-y-3 cursor-pointer rounded-2xl bg-card min-h-[380px] will-change-transform"
       onClick={handleClick}
     >
-      {/* Background Image - Only render if imageUrl exists */}
-      <div className="relative h-48 overflow-hidden">
-        {imageUrl && (
+      {/* Background Image */}
+      {imageUrl && (
+        <div className="relative h-48 overflow-hidden">
           <ImageWithFallback
             src={imageUrl}
             alt={title}
             fill
             loading="lazy"
             sizes="(max-width: 768px) 100vw, 33vw"
-            className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+            className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105 will-change-transform"
           />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-all duration-300" />
-      </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-all duration-300" />
+        </div>
+      )}
 
-      {/* Floating Badges - Conditional rendering */}
+      {/* Badges */}
       {category && (
         <div className="absolute top-4 right-4">
           <span className="text-xs font-semibold text-white bg-black/40 backdrop-blur-sm px-3 py-2 rounded-full border border-white/20 group-hover:bg-primary/20 group-hover:border-primary/40 transition-all duration-300">
@@ -91,7 +82,7 @@ function AIToolCard({
           <Button
             size="sm"
             variant="default"
-            onClick={handleButtonClick}
+            onClick={handleClick}
             className="font-medium px-6 py-2 rounded-xl transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-lg transform group-hover:scale-105"
           >
             Try Now
@@ -106,13 +97,13 @@ function AIToolCard({
   );
 }
 
-// Optimized memo with proper comparison
-export default memo(AIToolCard, (prev, next) => {
-  return (
+// Memoization: stable onClick + props
+export default memo(
+  AIToolCard,
+  (prev, next) =>
     prev.title === next.title &&
     prev.description === next.description &&
     prev.category === next.category &&
     prev.imageUrl === next.imageUrl &&
     prev.onClick === next.onClick
-  );
-});
+);
