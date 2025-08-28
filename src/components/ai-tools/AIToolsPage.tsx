@@ -12,28 +12,23 @@ export default function AIToolsPage() {
   const [aiTools, setAiTools] = useState<AITool[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch AI tools
   useEffect(() => {
-    let isCancelled = false;
+    let cancelled = false;
     const fetchTools = async () => {
       try {
-        const res = await fetch("/api/ai-tools", {
-          headers: {
-            "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
-          },
-        });
+        const res = await fetch("/api/ai-tools");
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
-        if (!isCancelled) setAiTools(data);
+        if (!cancelled) setAiTools(data);
       } catch (err) {
         console.error("Failed to fetch AI tools:", err);
       } finally {
-        if (!isCancelled) setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     };
     fetchTools();
     return () => {
-      isCancelled = true;
+      cancelled = true;
     };
   }, []);
 
@@ -54,7 +49,7 @@ export default function AIToolsPage() {
 
   return (
     <div className="min-h-screen bg-background py-8">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center space-x-2 bg-primary/10 rounded-full px-4 py-2 mb-6">
@@ -63,8 +58,8 @@ export default function AIToolsPage() {
               AI-Powered Health Tools
             </span>
           </div>
-          <h1 className="text-3xl lg:text-5xl font-bold font-[Plus_Jakarta_Sans] mb-6">
-            Explore Our Advanced
+          <h1 className="text-3xl lg:text-5xl font-bold mb-6">
+            Explore Our Advanced{" "}
             <span className="block text-primary">AI Health Tools</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
@@ -74,30 +69,8 @@ export default function AIToolsPage() {
           </p>
         </div>
 
-        {/* Stats Section */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 text-center">
-          <div>
-            <div className="text-3xl font-bold text-primary">30+</div>
-            <div className="text-sm text-muted-foreground">AI Tools</div>
-          </div>
-          <div>
-            <div className="text-3xl font-bold text-primary">100k+</div>
-            <div className="text-sm text-muted-foreground">Users Assisted</div>
-          </div>
-          <div>
-            <div className="text-3xl font-bold text-primary">4.8</div>
-            <div className="text-sm text-muted-foreground">Average Rating</div>
-          </div>
-          <div>
-            <div className="text-3xl font-bold text-primary">24/7</div>
-            <div className="text-sm text-muted-foreground">
-              Support Available
-            </div>
-          </div>
-        </div>
-
-        {/* Tools Grid - mobile optimized, wider cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
+        {/* Tools Grid */}
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {aiTools.map((tool) => (
             <AIToolCard
               key={tool.id}
