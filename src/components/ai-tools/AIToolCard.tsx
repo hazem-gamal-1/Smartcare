@@ -19,7 +19,6 @@ function AIToolCard({
   category,
   imageUrl,
 }: AIToolCardProps) {
-  // Stable click handler
   const handleClick = useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();
@@ -31,57 +30,59 @@ function AIToolCard({
 
   return (
     <Card
-      className="group relative overflow-hidden border hover:shadow-2xl transition-transform duration-300 hover:-translate-y-3 cursor-pointer rounded-2xl bg-card min-h-[380px] will-change-transform"
+      className="group relative overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-transform transition-shadow duration-500 hover:-translate-y-2 cursor-pointer rounded-2xl bg-card h-[380px] will-change-transform,box-shadow"
       onClick={handleClick}
     >
       {/* Background Image */}
       {imageUrl && (
-        <div className="relative h-48 overflow-hidden">
+        <div className="absolute inset-0">
           <ImageWithFallback
             src={imageUrl}
             alt={title}
-            className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
             fill
+            loading="lazy"
+            sizes="(max-width: 768px) 100vw, 33vw"
+            className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-all duration-300" />
         </div>
       )}
 
-      {/* Badges */}
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/50 to-black/20 group-hover:from-black/95 group-hover:via-black/60 transition-all duration-500" />
+
+      {/* Top badges */}
       {category && (
-        <div className="absolute top-4 right-4">
-          <span className="text-xs font-semibold text-white bg-black/40 backdrop-blur-sm px-3 py-2 rounded-full border border-white/20 group-hover:bg-primary/20 group-hover:border-primary/40 transition-all duration-300">
+        <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+          <span className="text-xs font-semibold text-white px-3 py-2 rounded-full border border-white/20 bg-black/60">
             {category}
           </span>
         </div>
       )}
 
-      <div className="absolute top-4 left-4">
-        <div className="bg-white/20 backdrop-blur-md border border-white/30 rounded-full px-3 py-1 group-hover:bg-primary/20 group-hover:border-primary/40 transition-all duration-300">
-          <span className="text-white text-xs font-semibold flex items-center">
-            <Sparkles className="h-3 w-3 mr-1" />
-            AI-Powered
-          </span>
+      <div className="absolute top-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-150">
+        <div className="flex items-center space-x-1 border border-white/30 rounded-full px-3 py-1 bg-white/20 backdrop-blur-md group-hover:bg-primary/20 group-hover:border-primary/40 transition-all duration-300">
+          <Sparkles className="h-3 w-3 text-white" />
+          <span className="text-white text-xs font-semibold">AI-Powered</span>
         </div>
       </div>
 
       {/* Content */}
-      <CardContent className="p-6 relative z-10 flex flex-col justify-between h-[calc(100%-12rem)]">
+      <CardContent className="relative z-10 h-full flex flex-col justify-between p-6">
         <div className="space-y-4 flex-1">
-          <h3 className="font-[Plus_Jakarta_Sans] font-bold text-xl text-card-foreground group-hover:text-primary transition-colors duration-300 line-clamp-2">
+          <h3 className="text-white font-[Plus_Jakarta_Sans] font-bold text-xl leading-tight line-clamp-2">
             {title}
           </h3>
-          <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3 mt-2">
+          <p className="text-white/90 text-sm leading-relaxed line-clamp-3">
             {description}
           </p>
         </div>
 
-        <div className="flex items-center justify-end pt-6 border-t border-border/50">
+        <div className="flex items-center justify-end pt-6 border-t border-white/20">
           <Button
             size="sm"
-            variant="default"
+            variant="outline"
+            className="w-full bg-white/20 backdrop-blur-sm border border-white/30 text-white hover:bg-white hover:text-primary transition-all duration-300 py-2.5 rounded-lg font-medium group-hover:shadow-lg transform group-hover:scale-[1.02]"
             onClick={handleClick}
-            className="font-medium px-6 py-2 rounded-xl transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-lg transform group-hover:scale-105"
           >
             Try Now
             <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform duration-300" />
@@ -89,13 +90,28 @@ function AIToolCard({
         </div>
       </CardContent>
 
-      {/* Bottom accent line */}
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/50 via-secondary/50 to-primary/50 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-center" />
+      {/* Bottom accent */}
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-center" />
+
+      {/* Floating dots animation */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+        <div className="flex space-x-1">
+          {[0.6, 0.4, 0.2].map((opacity, idx) => (
+            <div
+              key={idx}
+              className="w-2 h-2 rounded-full animate-pulse"
+              style={{
+                backgroundColor: `rgba(255,255,255,${opacity})`,
+                animationDelay: `${idx * 75}ms`,
+              }}
+            />
+          ))}
+        </div>
+      </div>
     </Card>
   );
 }
 
-// Memoization: stable onClick + props
 export default memo(
   AIToolCard,
   (prev, next) =>
