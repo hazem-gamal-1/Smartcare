@@ -82,15 +82,8 @@ export default function AIToolsPage() {
           </div>
         </div>
 
-        {/* Tools Grid - Optimized for mobile scrolling */}
-        <div
-          className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6"
-          style={{
-            // Optimize for mobile scrolling
-            transform: "translateZ(0)", // Force hardware acceleration
-            backfaceVisibility: "hidden",
-          }}
-        >
+        {/* Tools Grid */}
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
           {aiTools.map((tool) => (
             <AIToolCard
               key={tool.id}
