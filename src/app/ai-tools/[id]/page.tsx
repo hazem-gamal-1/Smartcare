@@ -1,4 +1,4 @@
-import CVToolPage from "@/components/ai-tools/CVToolPage";
+import CVToolPage from "@/components/ai-tools/ToolPage";
 import React from "react";
 export const metadata = {
   title: "tool",

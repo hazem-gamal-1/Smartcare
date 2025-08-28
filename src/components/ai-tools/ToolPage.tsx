@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/Card";
 import Loader from "@/components/ui/Loader";
 import Image from "next/image";
 import ChatBot from "@/components/ai-tools/Chabot";
+import AIDietFitnessPlanner from "./AIDietFitnessPlanner";
 
 interface Tool {
   id: string;
@@ -72,6 +73,9 @@ export default function CVToolPage() {
   }
 
   if (tool.title === "Medical Chatbot") return <ChatBot></ChatBot>;
+
+  if (tool.title === "AI Diet & Fitness Planner")
+    return <AIDietFitnessPlanner></AIDietFitnessPlanner>;
 
   return (
     <div className="min-h-screen bg-background py-12">
