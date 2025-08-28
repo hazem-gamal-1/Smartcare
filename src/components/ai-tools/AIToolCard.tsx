@@ -1,4 +1,6 @@
-import React, { memo, useCallback, useState, useEffect } from "react";
+"use client";
+
+import React, { memo, useCallback } from "react";
 import { Card, CardContent } from "../ui/Card";
 import { Button } from "../ui/Button";
 import { ArrowRight, Sparkles } from "lucide-react";
@@ -12,29 +14,6 @@ interface AIToolCardProps {
   imageUrl?: string;
 }
 
-// Hook to detect scrolling state
-function useScrollDetection() {
-  const [isScrolling, setIsScrolling] = useState(false);
-
-  useEffect(() => {
-    let timeout: NodeJS.Timeout;
-
-    const handleScroll = () => {
-      setIsScrolling(true);
-      clearTimeout(timeout);
-      timeout = setTimeout(() => setIsScrolling(false), 150);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      clearTimeout(timeout);
-    };
-  }, []);
-
-  return isScrolling;
-}
-
 function AIToolCard({
   title,
   description,
@@ -42,9 +21,6 @@ function AIToolCard({
   category,
   imageUrl,
 }: AIToolCardProps) {
-  const isScrolling = useScrollDetection();
-
-  // Stable click handler
   const handleClick = useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();
@@ -54,109 +30,36 @@ function AIToolCard({
     [onClick]
   );
 
-  // Optimized class names based on scroll state
-  const cardClasses = `
-    group relative overflow-hidden border cursor-pointer rounded-2xl bg-card min-h-[380px]
-    ${
-      isScrolling
-        ? "transition-none" // Disable transitions during scroll
-        : "hover:shadow-2xl transition-transform transition-shadow duration-300 hover:-translate-y-3"
-    }
-  `
-    .trim()
-    .replace(/\s+/g, " ");
-
-  const imageClasses = `
-    object-cover w-full h-full
-    ${
-      isScrolling
-        ? "" // No scaling during scroll
-        : "transition-transform duration-500 group-hover:scale-105"
-    }
-  `
-    .trim()
-    .replace(/\s+/g, " ");
-
-  // Badge classes optimized for scroll
-  const badgeBaseClasses = `
-    text-xs font-semibold text-white px-3 py-2 rounded-full border border-white/20
-    ${
-      isScrolling
-        ? "bg-black/60" // Solid background during scroll
-        : "bg-black/40 backdrop-blur-sm group-hover:bg-primary/20 group-hover:border-primary/40 transition-colors duration-300"
-    }
-  `
-    .trim()
-    .replace(/\s+/g, " ");
-
-  const aiPoweredClasses = `
-    border border-white/30 rounded-full px-3 py-1
-    ${
-      isScrolling
-        ? "bg-white/30" // Solid background during scroll
-        : "bg-white/20 backdrop-blur-md group-hover:bg-primary/20 group-hover:border-primary/40 transition-colors duration-300"
-    }
-  `
-    .trim()
-    .replace(/\s+/g, " ");
-
-  const buttonClasses = `
-    font-medium px-6 py-2 rounded-xl
-    ${
-      isScrolling
-        ? "" // No effects during scroll
-        : "transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-lg transform group-hover:scale-105"
-    }
-  `
-    .trim()
-    .replace(/\s+/g, " ");
-
-  const accentClasses = `
-    absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/50 via-secondary/50 to-primary/50 origin-center
-    ${
-      isScrolling
-        ? "scale-x-0" // Keep hidden during scroll
-        : "transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"
-    }
-  `
-    .trim()
-    .replace(/\s+/g, " ");
-
   return (
     <Card
-      className={cardClasses}
+      className="group relative overflow-hidden border cursor-pointer rounded-2xl bg-card min-h-[380px] hover:shadow-2xl transition-transform transition-shadow duration-300 hover:-translate-y-3"
       onClick={handleClick}
-      style={{
-        contain: "layout style paint",
-        willChange: isScrolling ? "auto" : "transform",
-      }}
     >
       {/* Background Image */}
       {imageUrl && (
-        <div
-          className="relative h-48 overflow-hidden"
-          style={{ willChange: isScrolling ? "auto" : "transform" }}
-        >
+        <div className="relative h-48 overflow-hidden">
           <ImageWithFallback
             src={imageUrl}
             alt={title}
-            loading="lazy"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className={imageClasses}
+            className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
             fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
       )}
 
-      {/* Badges */}
+      {/* Category Badge */}
       {category && (
         <div className="absolute top-4 right-4">
-          <span className={badgeBaseClasses}>{category}</span>
+          <span className="text-xs font-semibold text-white px-3 py-2 rounded-full border border-white/20 bg-black/40 backdrop-blur-sm">
+            {category}
+          </span>
         </div>
       )}
 
+      {/* AI Powered Badge */}
       <div className="absolute top-4 left-4">
-        <div className={aiPoweredClasses}>
+        <div className="border border-white/30 rounded-full px-3 py-1 bg-white/20 backdrop-blur-md">
           <span className="text-white text-xs font-semibold flex items-center">
             <Sparkles className="h-3 w-3 mr-1" />
             AI-Powered
@@ -167,16 +70,7 @@ function AIToolCard({
       {/* Content */}
       <CardContent className="p-6 relative z-10 flex flex-col justify-between h-[calc(100%-12rem)]">
         <div className="space-y-4 flex-1">
-          <h3
-            className={`
-            font-[Plus_Jakarta_Sans] font-bold text-xl text-card-foreground line-clamp-2
-            ${
-              isScrolling
-                ? ""
-                : "group-hover:text-primary transition-colors duration-300"
-            }
-          `}
-          >
+          <h3 className="font-[Plus_Jakarta_Sans] font-bold text-xl text-card-foreground line-clamp-2">
             {title}
           </h3>
           <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3 mt-2">
@@ -189,30 +83,20 @@ function AIToolCard({
             size="sm"
             variant="default"
             onClick={handleClick}
-            className={buttonClasses}
+            className="font-medium px-6 py-2 rounded-xl transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-lg transform group-hover:scale-105"
           >
             Try Now
-            <ArrowRight
-              className={`
-              ml-2 h-4 w-4
-              ${
-                isScrolling
-                  ? ""
-                  : "transform group-hover:translate-x-1 transition-transform duration-300"
-              }
-            `}
-            />
+            <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform duration-300" />
           </Button>
         </div>
       </CardContent>
 
       {/* Bottom accent line */}
-      <div className={accentClasses} />
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/50 via-secondary/50 to-primary/50 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-center" />
     </Card>
   );
 }
 
-// Enhanced memoization with scroll state consideration
 export default memo(
   AIToolCard,
   (prev, next) =>
