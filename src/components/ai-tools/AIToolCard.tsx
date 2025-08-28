@@ -40,10 +40,8 @@ function AIToolCard({
           <ImageWithFallback
             src={imageUrl}
             alt={title}
+            className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
             fill
-            loading="lazy"
-            sizes="(max-width: 768px) 100vw, 33vw"
-            className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105 will-change-transform"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-all duration-300" />
         </div>
