@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { Button } from "../ui/Button";
 import AIToolCard from "./AIToolCard";
 import { Zap, ChevronRight } from "lucide-react";
@@ -14,6 +14,7 @@ export default function AIToolsPage() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
+  // Fetch tools
   useEffect(() => {
     const fetchTools = async () => {
       try {
@@ -29,19 +30,29 @@ export default function AIToolsPage() {
     fetchTools();
   }, []);
 
-  // Memoize the rendered cards
-  const toolCards = useMemo(() => {
-    return aiTools.map((tool) => (
-      <AIToolCard
-        key={tool.id} // always prefer unique id
-        title={tool.title}
-        description={tool.description}
-        category={tool.category}
-        imageUrl={tool.imageUrl}
-        onClick={() => router.push(`/ai-tools/${tool.id}`)}
-      />
-    ));
-  }, [aiTools, router]);
+  // Stable click handler
+  const handleToolClick = useCallback(
+    (id: string) => {
+      router.push(`/ai-tools/${id}`);
+    },
+    [router]
+  );
+
+  // Memoized cards
+  const toolCards = useMemo(
+    () =>
+      aiTools.map((tool) => (
+        <AIToolCard
+          key={tool.id}
+          title={tool.title}
+          description={tool.description}
+          category={tool.category}
+          imageUrl={tool.imageUrl}
+          onClick={() => handleToolClick(tool.id)}
+        />
+      )),
+    [aiTools, handleToolClick]
+  );
 
   if (loading) return <Loader />;
 
@@ -66,12 +77,12 @@ export default function AIToolsPage() {
           </p>
         </div>
 
-        {/* AI Tools Grid */}
+        {/* Tools Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {toolCards}
         </div>
 
-        {/* Call-to-Action */}
+        {/* CTA */}
         <div className="text-center bg-gradient-to-r from-primary/5 to-secondary/5 rounded-3xl p-12">
           <h2 className="text-3xl font-bold font-[Plus_Jakarta_Sans] mb-6">
             Need More Personalized Care?
@@ -81,16 +92,14 @@ export default function AIToolsPage() {
             professional medical care. Connect with our certified doctors for
             consultations.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              onClick={() => handleNavigation("/specialties")}
-              className="px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-            >
-              Find a Doctor
-              <ChevronRight className="ml-3 h-5 w-5" />
-            </Button>
-          </div>
+          <Button
+            size="lg"
+            onClick={() => handleNavigation("/specialties")}
+            className="px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            Find a Doctor
+            <ChevronRight className="ml-3 h-5 w-5" />
+          </Button>
         </div>
       </div>
     </div>
