@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo, useCallback } from "react";
 import { Card, CardContent } from "../ui/Card";
 import { Button } from "../ui/Button";
 import { ArrowRight, Sparkles } from "lucide-react";
@@ -19,12 +19,31 @@ function AIToolCard({
   category,
   imageUrl,
 }: AIToolCardProps) {
+  // Prevent event bubbling and optimize click handling
+  const handleClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      onClick();
+    },
+    [onClick]
+  );
+
+  const handleButtonClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      onClick();
+    },
+    [onClick]
+  );
+
   return (
     <Card
       className="group relative overflow-hidden border hover:shadow-2xl transition-transform duration-300 hover:-translate-y-3 cursor-pointer rounded-2xl bg-card min-h-[380px]"
-      onClick={onClick}
+      onClick={handleClick}
     >
-      {/* Background Image */}
+      {/* Background Image - Only render if imageUrl exists */}
       <div className="relative h-48 overflow-hidden">
         {imageUrl && (
           <ImageWithFallback
@@ -39,7 +58,7 @@ function AIToolCard({
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-all duration-300" />
       </div>
 
-      {/* Floating Badges */}
+      {/* Floating Badges - Conditional rendering */}
       {category && (
         <div className="absolute top-4 right-4">
           <span className="text-xs font-semibold text-white bg-black/40 backdrop-blur-sm px-3 py-2 rounded-full border border-white/20 group-hover:bg-primary/20 group-hover:border-primary/40 transition-all duration-300">
@@ -72,7 +91,7 @@ function AIToolCard({
           <Button
             size="sm"
             variant="default"
-            onClick={onClick}
+            onClick={handleButtonClick}
             className="font-medium px-6 py-2 rounded-xl transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-lg transform group-hover:scale-105"
           >
             Try Now
@@ -87,12 +106,13 @@ function AIToolCard({
   );
 }
 
-// Memoize with comparator for performance
-export default React.memo(
-  AIToolCard,
-  (prev, next) =>
+// Optimized memo with proper comparison
+export default memo(AIToolCard, (prev, next) => {
+  return (
     prev.title === next.title &&
     prev.description === next.description &&
     prev.category === next.category &&
-    prev.imageUrl === next.imageUrl
-);
+    prev.imageUrl === next.imageUrl &&
+    prev.onClick === next.onClick
+  );
+});
