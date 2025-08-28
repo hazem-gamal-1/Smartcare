@@ -1,10 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import AIToolCard from "./AIToolCard";
-import { Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Loader from "../ui/Loader";
+import AIToolCard from "./AIToolCard";
 import { AITool } from "@prisma/client";
 
 export default function AIToolsPage() {
@@ -13,29 +12,27 @@ export default function AIToolsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let cancelled = false;
+    let isCancelled = false;
     const fetchTools = async () => {
       try {
         const res = await fetch("/api/ai-tools");
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
-        if (!cancelled) setAiTools(data);
+        if (!isCancelled) setAiTools(data);
       } catch (err) {
         console.error("Failed to fetch AI tools:", err);
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!isCancelled) setLoading(false);
       }
     };
     fetchTools();
     return () => {
-      cancelled = true;
+      isCancelled = true;
     };
   }, []);
 
   const handleToolClick = useCallback(
-    (id: string) => () => {
-      router.push(`/ai-tools/${id}`);
-    },
+    (id: string) => () => router.push(`/ai-tools/${id}`),
     [router]
   );
 
@@ -52,14 +49,8 @@ export default function AIToolsPage() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center space-x-2 bg-primary/10 rounded-full px-4 py-2 mb-6">
-            <Zap className="h-4 w-4 text-primary" />
-            <span className="text-sm font-medium text-primary">
-              AI-Powered Health Tools
-            </span>
-          </div>
-          <h1 className="text-3xl lg:text-5xl font-bold mb-6">
-            Explore Our Advanced{" "}
+          <h1 className="text-3xl lg:text-5xl font-bold font-[Plus_Jakarta_Sans] mb-6">
+            Explore Our Advanced
             <span className="block text-primary">AI Health Tools</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
@@ -69,8 +60,37 @@ export default function AIToolsPage() {
           </p>
         </div>
 
-        {/* Tools Grid */}
-        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Stats Section */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 text-center">
+          <div>
+            <div className="text-3xl font-bold text-primary">30+</div>
+            <div className="text-sm text-muted-foreground">AI Tools</div>
+          </div>
+          <div>
+            <div className="text-3xl font-bold text-primary">100k+</div>
+            <div className="text-sm text-muted-foreground">Users Assisted</div>
+          </div>
+          <div>
+            <div className="text-3xl font-bold text-primary">4.8</div>
+            <div className="text-sm text-muted-foreground">Average Rating</div>
+          </div>
+          <div>
+            <div className="text-3xl font-bold text-primary">24/7</div>
+            <div className="text-sm text-muted-foreground">
+              Support Available
+            </div>
+          </div>
+        </div>
+
+        {/* Tools Grid - Optimized for mobile scrolling */}
+        <div
+          className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6"
+          style={{
+            // Optimize for mobile scrolling
+            transform: "translateZ(0)", // Force hardware acceleration
+            backfaceVisibility: "hidden",
+          }}
+        >
           {aiTools.map((tool) => (
             <AIToolCard
               key={tool.id}

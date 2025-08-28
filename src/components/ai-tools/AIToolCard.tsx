@@ -1,5 +1,3 @@
-"use client";
-
 import React, { memo, useCallback } from "react";
 import { Card, CardContent } from "../ui/Card";
 import { Button } from "../ui/Button";
@@ -21,6 +19,7 @@ function AIToolCard({
   category,
   imageUrl,
 }: AIToolCardProps) {
+  // Stable click handler
   const handleClick = useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();
@@ -32,69 +31,70 @@ function AIToolCard({
 
   return (
     <Card
-      className="group relative overflow-hidden cursor-pointer rounded-2xl bg-card shadow-md hover:shadow-2xl transition-shadow duration-300"
+      className="group relative overflow-hidden border cursor-pointer rounded-2xl bg-card min-h-[380px] hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 will-change-transform"
       onClick={handleClick}
     >
-      {/* Image with fixed aspect ratio */}
+      {/* Background Image */}
       {imageUrl && (
-        <div className="relative w-full aspect-[4/3] overflow-hidden">
+        <div className="relative h-48 overflow-hidden">
           <ImageWithFallback
             src={imageUrl}
             alt={title}
-            className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105 will-change-transform"
             fill
           />
         </div>
       )}
 
-      {/* Category badge */}
+      {/* Badges */}
       {category && (
-        <div className="absolute top-4 right-4">
-          <span className="text-xs font-semibold text-white px-3 py-1 rounded-full bg-black/50">
+        <div className="absolute top-4 right-4 z-20">
+          <span className="text-xs font-semibold text-white px-3 py-2 rounded-full border border-white/20 bg-black/60 backdrop-blur-sm group-hover:bg-primary/80 group-hover:border-primary/60 transition-colors duration-300">
             {category}
           </span>
         </div>
       )}
 
-      {/* AI-Powered badge */}
-      <div className="absolute top-4 left-4">
-        <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 flex items-center text-xs font-semibold text-white">
-          <Sparkles className="h-3 w-3 mr-1" />
-          AI-Powered
+      <div className="absolute top-4 left-4 z-20">
+        <div className="border border-white/30 rounded-full px-3 py-1 bg-white/20 backdrop-blur-md group-hover:bg-primary/20 group-hover:border-primary/40 transition-colors duration-300">
+          <span className="text-white text-xs font-semibold flex items-center">
+            <Sparkles className="h-3 w-3 mr-1" />
+            AI-Powered
+          </span>
         </div>
       </div>
 
       {/* Content */}
-      <CardContent className="p-4 flex flex-col justify-between min-h-[150px]">
-        <div className="space-y-2">
-          <h3 className="font-bold text-lg text-card-foreground line-clamp-2">
+      <CardContent className="p-6 relative z-10 flex flex-col justify-between h-[calc(100%-12rem)]">
+        <div className="space-y-4 flex-1">
+          <h3 className="font-[Plus_Jakarta_Sans] font-bold text-xl text-card-foreground line-clamp-2 group-hover:text-primary transition-colors duration-300">
             {title}
           </h3>
-          <p className="text-muted-foreground text-sm line-clamp-3">
+          <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3 mt-2">
             {description}
           </p>
         </div>
 
-        <Button
-          size="sm"
-          variant="default"
-          className="mt-4 w-full flex justify-center items-center gap-2"
-          onClick={handleClick}
-        >
-          Try Now
-          <ArrowRight className="h-4 w-4" />
-        </Button>
+        <div className="flex items-center justify-end pt-6 border-t border-border/50">
+          <Button
+            size="sm"
+            variant="default"
+            onClick={handleClick}
+            className="font-medium px-6 py-2 rounded-xl transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-lg transform group-hover:scale-105"
+          >
+            Try Now
+            <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform duration-300" />
+          </Button>
+        </div>
       </CardContent>
+
+      {/* Bottom accent line */}
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/50 via-secondary/50 to-primary/50 origin-center transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
     </Card>
   );
 }
 
-export default memo(
-  AIToolCard,
-  (prev, next) =>
-    prev.title === next.title &&
-    prev.description === next.description &&
-    prev.category === next.category &&
-    prev.imageUrl === next.imageUrl &&
-    prev.onClick === next.onClick
-);
+// Simple memoization
+export default memo(AIToolCard);
