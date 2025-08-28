@@ -1,5 +1,5 @@
 import React from "react";
-import SpecialtiesPage from "@/components/Specialties/SpecialtiesPage";
+import SpecialtiesPage from "@/components/specialties/SpecialtiesPage";
 export const metadata = {
   title: "Specialties",
 };

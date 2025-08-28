@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Specialty } from "@prisma/client";
-import SpecialtyCard from "./SpecialtyCard";
+import SpecialtyCard from "../specialties/SpecialtyCard";
 import {
   Heart,
   Brain,
