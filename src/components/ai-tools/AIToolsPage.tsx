@@ -54,7 +54,7 @@ export default function AIToolsPage() {
 
   return (
     <div className="min-h-screen bg-background py-8">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12">
         {/* Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center space-x-2 bg-primary/10 rounded-full px-4 py-2 mb-6">
@@ -96,9 +96,8 @@ export default function AIToolsPage() {
           </div>
         </div>
 
-        {/* Tools Grid */}
-        {/* Tools Grid - wider cards */}
-        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
+        {/* Tools Grid - mobile optimized, wider cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
           {aiTools.map((tool) => (
             <AIToolCard
               key={tool.id}
