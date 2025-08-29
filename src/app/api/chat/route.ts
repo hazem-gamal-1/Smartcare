@@ -15,7 +15,17 @@ export async function POST(req: NextRequest) {
     }
 
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-    const result = await model.generateContent(message);
+
+    // Add system prompt for medical chatbot behavior
+    const prompt = `
+      You are a medical chatbot. You should only respond to medical-related questions.
+      If a question is not related to medicine or health, politely decline to answer.
+      Answer in a professional, informative, and concise manner.
+      
+      User: ${message}
+    `;
+
+    const result = await model.generateContent(prompt);
     const response = result.response.text();
 
     return NextResponse.json({ response });
