@@ -108,68 +108,152 @@ export default function DashboardPage() {
                       className="border-l-4 border-l-primary"
                     >
                       <CardContent className="p-4">
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 flex-wrap">
-                          {/* Avatar + Info */}
-                          <div className="flex items-center gap-4 flex-1 min-w-0">
-                            <Avatar className="h-12 w-12 flex-shrink-0">
-                              <AvatarImage
-                                src={
-                                  role === "patient"
-                                    ? appointment.doctor?.imageUrl
-                                    : appointment.Patient?.imageUrl
-                                }
-                              />
-                              <AvatarFallback>
-                                {(role === "patient"
-                                  ? appointment.doctor?.name
-                                  : appointment.Patient?.name
-                                )
-                                  ?.split(" ")
-                                  .map((n) => n[0])
-                                  .join("")}
-                              </AvatarFallback>
-                            </Avatar>
-                            <div className="space-y-1">
-                              <h4 className="font-semibold truncate">
-                                {role === "patient"
-                                  ? appointment.doctor?.name
-                                  : appointment.Patient?.name}
-                              </h4>
-                              {role === "patient" ? (
+                        {role === "patient" ? (
+                          // Patient view - original layout
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 flex-wrap">
+                            {/* Avatar + Info */}
+                            <div className="flex items-center gap-4 flex-1 min-w-0">
+                              <Avatar className="h-12 w-12 flex-shrink-0">
+                                <AvatarImage
+                                  src={appointment.doctor?.imageUrl}
+                                />
+                                <AvatarFallback>
+                                  {appointment.doctor?.name
+                                    ?.split(" ")
+                                    .map((n) => n[0])
+                                    .join("")}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div className="flex-1 min-w-0 space-y-1">
+                                <h4 className="font-semibold truncate">
+                                  {appointment.doctor?.name}
+                                </h4>
                                 <p className="text-sm text-muted-foreground truncate">
                                   {appointment.doctor?.specialty?.title}
                                 </p>
-                              ) : (
-                                <div className="space-y-1">
-                                  <p className="text-sm text-muted-foreground truncate">
-                                    {appointment.Patient?.email}
-                                  </p>
-                                  {appointment.Patient?.phone && (
-                                    <p className="text-sm text-muted-foreground truncate">
-                                      {appointment.Patient.phone}
-                                    </p>
-                                  )}
-                                </div>
-                              )}
+                              </div>
                             </div>
-                          </div>
 
-                          {/* Appointment Meta */}
-                          <div className="flex flex-col gap-2 text-sm text-muted-foreground sm:items-start">
-                            <div className="flex items-center gap-1">
-                              <Calendar className="h-4 w-4" />
-                              <span>
-                                {new Date(
-                                  appointment.date
-                                ).toLocaleDateString()}
-                              </span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Clock className="h-4 w-4" />
-                              <span>{appointment.time}</span>
+                            {/* Appointment Meta */}
+                            <div className="flex flex-col gap-2 text-sm text-muted-foreground sm:items-start">
+                              <div className="flex items-center gap-1">
+                                <Calendar className="h-4 w-4" />
+                                <span>
+                                  {new Date(
+                                    appointment.date
+                                  ).toLocaleDateString()}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Clock className="h-4 w-4" />
+                                <span>{appointment.time}</span>
+                              </div>
                             </div>
                           </div>
-                        </div>
+                        ) : (
+                   
+                          <div className="space-y-4">
+                       
+                            <div className="block sm:hidden">
+                              {/* Avatar and Name */}
+                              <div className="flex items-center gap-4 mb-3">
+                                <Avatar className="h-12 w-12 flex-shrink-0">
+                                  <AvatarImage
+                                    src={appointment.Patient?.imageUrl}
+                                  />
+                                  <AvatarFallback>
+                                    {appointment.Patient?.name
+                                      ?.split(" ")
+                                      .map((n) => n[0])
+                                      .join("")}
+                                  </AvatarFallback>
+                                </Avatar>
+                                <div className="flex-1 min-w-0">
+                                  <h4 className="font-semibold truncate">
+                                    {appointment.Patient?.name}
+                                  </h4>
+                                </div>
+                              </div>
+
+                              {/* Patient Contact Info */}
+                              <div className="space-y-2 mb-3 ml-0">
+                                <p className="text-sm text-muted-foreground truncate">
+                                  {appointment.Patient?.email}
+                                </p>
+                                {appointment.Patient?.phone && (
+                                  <p className="text-sm text-muted-foreground truncate">
+                                    {appointment.Patient.phone}
+                                  </p>
+                                )}
+                              </div>
+
+                              {/* Appointment Meta */}
+                              <div className="flex flex-col gap-2 text-sm text-muted-foreground">
+                                <div className="flex items-center gap-1">
+                                  <Calendar className="h-4 w-4" />
+                                  <span>
+                                    {new Date(
+                                      appointment.date
+                                    ).toLocaleDateString()}
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Clock className="h-4 w-4" />
+                                  <span>{appointment.time}</span>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Desktop layout */}
+                            <div className="hidden sm:flex sm:items-center sm:justify-between gap-4 flex-wrap">
+                              {/* Avatar + Info */}
+                              <div className="flex items-center gap-4 flex-1 min-w-0">
+                                <Avatar className="h-12 w-12 flex-shrink-0">
+                                  <AvatarImage
+                                    src={appointment.Patient?.imageUrl}
+                                  />
+                                  <AvatarFallback>
+                                    {appointment.Patient?.name
+                                      ?.split(" ")
+                                      .map((n) => n[0])
+                                      .join("")}
+                                  </AvatarFallback>
+                                </Avatar>
+                                <div className="flex-1 min-w-0 space-y-1">
+                                  <h4 className="font-semibold truncate">
+                                    {appointment.Patient?.name}
+                                  </h4>
+                                  <div className="space-y-1">
+                                    <p className="text-sm text-muted-foreground truncate">
+                                      {appointment.Patient?.email}
+                                    </p>
+                                    {appointment.Patient?.phone && (
+                                      <p className="text-sm text-muted-foreground truncate">
+                                        {appointment.Patient.phone}
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Appointment Meta */}
+                              <div className="flex flex-col gap-2 text-sm text-muted-foreground sm:items-start">
+                                <div className="flex items-center gap-1">
+                                  <Calendar className="h-4 w-4" />
+                                  <span>
+                                    {new Date(
+                                      appointment.date
+                                    ).toLocaleDateString()}
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Clock className="h-4 w-4" />
+                                  <span>{appointment.time}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </CardContent>
                     </Card>
                   ))}
@@ -235,31 +319,67 @@ export default function DashboardPage() {
                         className="border-l-4 border-l-primary"
                       >
                         <CardContent className="p-4">
-                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 flex-wrap">
-                            {/* Avatar + Info */}
-                            <div className="flex items-center gap-4 flex-1 min-w-0">
-                              <Avatar className="h-12 w-12 flex-shrink-0">
-                                <AvatarImage src={patient.imageUrl} />
-                                <AvatarFallback>
-                                  {patient.name
-                                    .split(" ")
-                                    .map((n) => n[0])
-                                    .join("")}
-                                </AvatarFallback>
-                              </Avatar>
-                              <div className="flex-1 min-w-0 space-y-1">
-                                <h4 className="font-semibold truncate">
-                                  {patient.name}
-                                </h4>
-                                <div className="space-y-1">
+                          <div className="space-y-4">
+                            {/* Mobile layout */}
+                            <div className="block sm:hidden">
+                              {/* Avatar and Name */}
+                              <div className="flex items-center gap-4 mb-3">
+                                <Avatar className="h-12 w-12 flex-shrink-0">
+                                  <AvatarImage src={patient.imageUrl} />
+                                  <AvatarFallback>
+                                    {patient.name
+                                      .split(" ")
+                                      .map((n) => n[0])
+                                      .join("")}
+                                  </AvatarFallback>
+                                </Avatar>
+                                <div className="flex-1 min-w-0">
+                                  <h4 className="font-semibold truncate">
+                                    {patient.name}
+                                  </h4>
+                                </div>
+                              </div>
+
+                              {/* Patient Contact Info */}
+                              <div className="space-y-2 ml-0">
+                                <p className="text-sm text-muted-foreground truncate">
+                                  {patient.email}
+                                </p>
+                                {patient.phone && (
                                   <p className="text-sm text-muted-foreground truncate">
-                                    {patient.email}
+                                    {patient.phone}
                                   </p>
-                                  {patient.phone && (
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Desktop layout */}
+                            <div className="hidden sm:flex sm:items-center sm:justify-between gap-4 flex-wrap">
+                              {/* Avatar + Info */}
+                              <div className="flex items-center gap-4 flex-1 min-w-0">
+                                <Avatar className="h-12 w-12 flex-shrink-0">
+                                  <AvatarImage src={patient.imageUrl} />
+                                  <AvatarFallback>
+                                    {patient.name
+                                      .split(" ")
+                                      .map((n) => n[0])
+                                      .join("")}
+                                  </AvatarFallback>
+                                </Avatar>
+                                <div className="flex-1 min-w-0 space-y-1">
+                                  <h4 className="font-semibold truncate">
+                                    {patient.name}
+                                  </h4>
+                                  <div className="space-y-1">
                                     <p className="text-sm text-muted-foreground truncate">
-                                      {patient.phone}
+                                      {patient.email}
                                     </p>
-                                  )}
+                                    {patient.phone && (
+                                      <p className="text-sm text-muted-foreground truncate">
+                                        {patient.phone}
+                                      </p>
+                                    )}
+                                  </div>
                                 </div>
                               </div>
                             </div>
