@@ -143,6 +143,8 @@ export default function CompleteProfilePage() {
             imageUrl: user.imageUrl || "",
           }),
         });
+
+
         if (!res.ok) throw new Error("Failed to create patient");
       }
 
@@ -272,8 +274,6 @@ export default function CompleteProfilePage() {
     </div>
   );
 }
-
-
 
 function UserTypeSelector({
   userType,

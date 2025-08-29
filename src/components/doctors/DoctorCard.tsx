@@ -14,12 +14,7 @@ const DoctorCard = ({ doctor }: { doctor: Doctor }) => {
   const specialtyId = params.specialtyid?.toString();
 
   return (
-    <Card
-      className="group hover:shadow-lg transition-transform transition-shadow duration-300 hover:-translate-y-1 cursor-pointer  shadow-lg"
-      onClick={() => {
-        handleNavigation(`/specialties/${specialtyId}/${doctor.id}`);
-      }}
-    >
+    <Card className="group hover:shadow-lg transition-transform transition-shadow duration-300 hover:-translate-y-1 cursor-pointer  shadow-lg">
       <CardContent className="p-0 overflow-hidden">
         <div className="flex flex-col lg:flex-row">
           {/* Image Section */}

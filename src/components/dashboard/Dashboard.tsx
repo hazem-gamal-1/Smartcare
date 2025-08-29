@@ -71,6 +71,8 @@ export default function DashboardPage() {
     fetchAppointments();
   }, []);
 
+  console.log(appointments);
+
   if (loading) return <Loader />;
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -143,9 +145,7 @@ export default function DashboardPage() {
                             <div className="flex items-center space-x-4">
                               <Avatar className="h-12 w-12">
                                 <AvatarImage
-                                  src={
-                                    appointment.Patient.imageUrl || undefined
-                                  }
+                                  src={appointment.Patient.imageUrl}
                                 />
                                 <AvatarFallback>
                                   {appointment.Patient.name

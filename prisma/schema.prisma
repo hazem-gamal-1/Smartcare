@@ -12,7 +12,7 @@ model Patient {
   name         String
   email        String
   phone        String?
-  imageUrl     String?
+  imageUrl     String
   appointments Appointment[]
 }
 
