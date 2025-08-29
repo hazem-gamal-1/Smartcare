@@ -6,13 +6,13 @@ const prisma = new PrismaClient();
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
-    const { id, name, email, phone } = data;
+    const { id, name, email, phone, imageUrl } = data;
 
     if (!id || !name || !email)
       return new NextResponse("Missing required fields", { status: 400 });
 
     const patient = await prisma.patient.create({
-      data: { id, name, email, phone },
+      data: { id, name, email, phone, imageUrl },
     });
 
     return NextResponse.json(patient, { status: 201 });
