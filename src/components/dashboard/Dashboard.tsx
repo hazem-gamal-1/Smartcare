@@ -140,16 +140,7 @@ export default function DashboardPage() {
                                   {appointment.doctor?.specialty?.title}
                                 </p>
                               ) : (
-                                <div className="space-y-1">
-                                  <p className="text-sm text-muted-foreground truncate">
-                                    {appointment.Patient?.email}
-                                  </p>
-                                  {appointment.Patient?.phone && (
-                                    <p className="text-sm text-muted-foreground truncate">
-                                      {appointment.Patient.phone}
-                                    </p>
-                                  )}
-                                </div>
+                                <></>
                               )}
                             </div>
                           </div>
