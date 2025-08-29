@@ -91,7 +91,7 @@ export default function DashboardPage() {
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
                     <span>Upcoming Appointments</span>
-                    {role === "patient" && (
+                    {true && (
                       <Button
                         size="sm"
                         onClick={() => handleNavigation("/specialties")}
