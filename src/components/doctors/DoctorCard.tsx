@@ -15,8 +15,10 @@ const DoctorCard = ({ doctor }: { doctor: Doctor }) => {
 
   return (
     <Card
-      className="group hover:shadow-lg transition-transform transition-shadow duration-300 hover:-translate-y-1 cursor-pointer border-0 shadow-lg"
-      onClick={() => {}}
+      className="group hover:shadow-lg transition-transform transition-shadow duration-300 hover:-translate-y-1 cursor-pointer  shadow-lg"
+      onClick={() => {
+        handleNavigation(`/specialties/${specialtyId}/${doctor.id}`);
+      }}
     >
       <CardContent className="p-0 overflow-hidden">
         <div className="flex flex-col lg:flex-row">
