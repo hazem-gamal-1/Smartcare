@@ -110,7 +110,7 @@ export default function DoctorProfile() {
                         </Badge>
                       </div>
                       <p className="text-lg text-primary font-medium">
-                        {doctor.specialty.title}
+                        {doctor.title}
                       </p>
                       <div className="flex items-center gap-4 text-muted-foreground">
                         <div className="flex items-center">
