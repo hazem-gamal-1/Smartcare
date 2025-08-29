@@ -53,7 +53,6 @@ export default function DashboardPage() {
         setRole(userRole);
 
         setAppointments(data?.appointments || []);
-
         if (userRole === "patient" && data?.doctors)
           setAllDoctors(data.doctors);
         if (userRole === "doctor" && data?.patients)
@@ -109,7 +108,7 @@ export default function DashboardPage() {
                       className="border-l-4 border-l-primary"
                     >
                       <CardContent className="p-4">
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 flex-wrap">
                           {/* Avatar + Info */}
                           <div className="flex items-center gap-4 flex-1 min-w-0">
                             <Avatar className="h-12 w-12 flex-shrink-0">
@@ -141,7 +140,7 @@ export default function DashboardPage() {
                                   {appointment.doctor?.specialty?.title}
                                 </p>
                               ) : (
-                                <div className="space-y-2">
+                                <div className="space-y-1">
                                   <p className="text-sm text-muted-foreground truncate">
                                     {appointment.Patient?.email}
                                   </p>
@@ -192,7 +191,7 @@ export default function DashboardPage() {
                         className="border-l-4 border-l-primary"
                       >
                         <CardContent className="p-4">
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 flex-wrap">
                             {/* Avatar + Info */}
                             <div className="flex items-center gap-4 flex-1 min-w-0">
                               <Avatar className="h-12 w-12 flex-shrink-0">
@@ -236,7 +235,7 @@ export default function DashboardPage() {
                         className="border-l-4 border-l-primary"
                       >
                         <CardContent className="p-4">
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 flex-wrap">
                             {/* Avatar + Info */}
                             <div className="flex items-center gap-4 flex-1 min-w-0">
                               <Avatar className="h-12 w-12 flex-shrink-0">
@@ -252,7 +251,7 @@ export default function DashboardPage() {
                                 <h4 className="font-semibold truncate">
                                   {patient.name}
                                 </h4>
-                                <div className="space-y-2">
+                                <div className="space-y-1">
                                   <p className="text-sm text-muted-foreground truncate">
                                     {patient.email}
                                   </p>
