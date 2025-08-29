@@ -105,7 +105,7 @@ export default function CompleteProfilePage() {
     e.preventDefault();
     if (!user) return alert("User not found");
 
-    // Validation
+    // Basic validation
     if (userType === "doctor" && (!formData.name || !formData.specialtyId)) {
       return alert("Please fill in all required fields (name & specialty).");
     }
@@ -114,14 +114,13 @@ export default function CompleteProfilePage() {
     }
 
     setIsLoading(true);
+
     try {
-      // Update Clerk metadata
       await user.update({
         unsafeMetadata: { role: userType, completeProfile: true },
       });
 
       if (userType === "doctor") {
-        // Create doctor in database
         const res = await fetch("/api/doctors", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -133,7 +132,6 @@ export default function CompleteProfilePage() {
         });
         if (!res.ok) throw new Error("Failed to create doctor");
       } else {
-        // Create patient in database
         const res = await fetch("/api/patients", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -147,12 +145,13 @@ export default function CompleteProfilePage() {
         });
         if (!res.ok) throw new Error("Failed to create patient");
       }
+
+      window.location.href = "/";
     } catch (err) {
       console.error(err);
       alert("Error saving profile");
     } finally {
       setIsLoading(false);
-      router.push("/");
     }
   };
 
@@ -274,7 +273,7 @@ export default function CompleteProfilePage() {
   );
 }
 
-/* ---------------------- Helper Components ---------------------- */
+
 
 function UserTypeSelector({
   userType,
