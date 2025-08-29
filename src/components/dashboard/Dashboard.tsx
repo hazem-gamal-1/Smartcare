@@ -75,7 +75,7 @@ export default function DashboardPage() {
         {/* LEFT: Tabs Section */}
         <div className="lg:col-span-2">
           <Tabs defaultValue="appointments" className="space-y-6">
-            <TabsList className="overflow-x-auto">
+            <TabsList>
               <TabsTrigger value="appointments">Appointments</TabsTrigger>
               {role === "patient" && (
                 <TabsTrigger value="doctors">All Doctors</TabsTrigger>
@@ -89,13 +89,12 @@ export default function DashboardPage() {
             <TabsContent value="appointments" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center justify-between flex-wrap">
+                  <CardTitle className="flex items-center justify-between">
                     <span>Upcoming Appointments</span>
                     {role === "patient" && (
                       <Button
                         size="sm"
                         onClick={() => handleNavigation("/specialties")}
-                        className="mt-2 sm:mt-0"
                       >
                         <Plus className="h-4 w-4 mr-2" />
                         Book New
@@ -109,9 +108,9 @@ export default function DashboardPage() {
                       key={appointment.id}
                       className="border-l-4 border-l-primary"
                     >
-                      <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center gap-4">
+                      <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center gap-4 w-full">
                         {/* Avatar + Info */}
-                        <div className="flex items-center gap-4 flex-1 min-w-0">
+                        <div className="flex items-center gap-4 w-full sm:flex-1">
                           <Avatar className="h-12 w-12 flex-shrink-0">
                             <AvatarImage
                               src={
@@ -130,7 +129,7 @@ export default function DashboardPage() {
                                 .join("")}
                             </AvatarFallback>
                           </Avatar>
-                          <div className="flex flex-col space-y-1 truncate">
+                          <div className="flex flex-col space-y-1 truncate w-full">
                             <h4 className="font-semibold truncate">
                               {role === "patient"
                                 ? appointment.doctor?.name
@@ -156,7 +155,7 @@ export default function DashboardPage() {
                         </div>
 
                         {/* Appointment Meta */}
-                        <div className="flex flex-col sm:items-end items-center space-y-1 text-sm text-muted-foreground">
+                        <div className="flex flex-col sm:items-start text-sm text-muted-foreground gap-1">
                           <div className="flex items-center gap-1">
                             <Calendar className="h-4 w-4" />
                             <span>
@@ -174,7 +173,6 @@ export default function DashboardPage() {
                 </CardContent>
               </Card>
             </TabsContent>
-
             {/* Doctors Tab */}
             {role === "patient" && (
               <TabsContent value="doctors" className="space-y-6">
@@ -186,25 +184,36 @@ export default function DashboardPage() {
                     {allDoctors.map((doctor) => (
                       <Card
                         key={doctor.id}
-                        className="p-4 flex flex-col sm:flex-row sm:items-center gap-4"
+                        className="border-l-4 border-l-primary"
                       >
-                        <Avatar className="h-12 w-12 flex-shrink-0">
-                          <AvatarImage src={doctor.imageUrl} />
-                          <AvatarFallback>
-                            {doctor.name
-                              .split(" ")
-                              .map((n) => n[0])
-                              .join("")}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="flex flex-col space-y-1 truncate text-center sm:text-left flex-1 min-w-0">
-                          <h4 className="font-semibold truncate">
-                            {doctor.name}
-                          </h4>
-                          <p className="text-sm text-muted-foreground truncate">
-                            {doctor.specialty?.title}
-                          </p>
-                        </div>
+                        <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full">
+                          {/* Avatar + Info */}
+                          <div className="flex items-center gap-4 w-full sm:flex-1">
+                            <Avatar className="h-12 w-12 flex-shrink-0">
+                              <AvatarImage src={doctor.imageUrl} />
+                              <AvatarFallback>
+                                {doctor.name
+                                  .split(" ")
+                                  .map((n) => n[0])
+                                  .join("")}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div className="flex flex-col space-y-1 truncate w-full">
+                              <h4 className="font-semibold truncate">
+                                {doctor.name}
+                              </h4>
+                              <p className="text-sm text-muted-foreground truncate">
+                                {doctor.specialty?.title}
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Optional Meta (empty for now or can add e.g. number of appointments) */}
+                          <div className="flex flex-col sm:items-end text-sm text-muted-foreground gap-1">
+                            {/* Example placeholder */}
+                            <span>&nbsp;</span>
+                          </div>
+                        </CardContent>
                       </Card>
                     ))}
                   </CardContent>
@@ -223,30 +232,40 @@ export default function DashboardPage() {
                     {allPatients.map((patient) => (
                       <Card
                         key={patient.id}
-                        className="p-4 flex flex-col sm:flex-row sm:items-center gap-4"
+                        className="border-l-4 border-l-primary"
                       >
-                        <Avatar className="h-12 w-12 flex-shrink-0">
-                          <AvatarImage src={patient.imageUrl} />
-                          <AvatarFallback>
-                            {patient.name
-                              .split(" ")
-                              .map((n) => n[0])
-                              .join("")}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="flex flex-col space-y-1 truncate text-center sm:text-left flex-1 min-w-0">
-                          <h4 className="font-semibold truncate">
-                            {patient.name}
-                          </h4>
-                          <p className="text-sm text-muted-foreground truncate">
-                            {patient.email}
-                          </p>
-                          {patient.phone && (
-                            <p className="text-sm text-muted-foreground truncate">
-                              {patient.phone}
-                            </p>
-                          )}
-                        </div>
+                        <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full">
+                          {/* Avatar + Info */}
+                          <div className="flex items-center gap-4 w-full sm:flex-1">
+                            <Avatar className="h-12 w-12 flex-shrink-0">
+                              <AvatarImage src={patient.imageUrl} />
+                              <AvatarFallback>
+                                {patient.name
+                                  .split(" ")
+                                  .map((n) => n[0])
+                                  .join("")}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div className="flex flex-col space-y-1 truncate w-full">
+                              <h4 className="font-semibold truncate">
+                                {patient.name}
+                              </h4>
+                              <p className="text-sm text-muted-foreground truncate">
+                                {patient.email}
+                              </p>
+                              {patient.phone && (
+                                <p className="text-sm text-muted-foreground truncate">
+                                  {patient.phone}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Optional Meta (empty for now or any extra info) */}
+                          <div className="flex flex-col sm:items-end text-sm text-muted-foreground gap-1">
+                            <span>&nbsp;</span>
+                          </div>
+                        </CardContent>
                       </Card>
                     ))}
                   </CardContent>
@@ -256,9 +275,9 @@ export default function DashboardPage() {
           </Tabs>
         </div>
 
-        {/* RIGHT: Quick Actions */}
+        {/* RIGHT: Quick Actions (patients only) */}
         {role === "patient" && (
-          <div className="flex flex-col gap-4">
+          <div className="space-y-6">
             <Card
               className="hover:shadow-lg transition-all duration-300 cursor-pointer group"
               onClick={() => handleNavigation("/specialties")}
