@@ -91,7 +91,7 @@ export default function DashboardPage() {
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
                     <span>Upcoming Appointments</span>
-                    {true && (
+                    {role === "patient" && (
                       <Button
                         size="sm"
                         onClick={() => handleNavigation("/specialties")}
@@ -108,63 +108,67 @@ export default function DashboardPage() {
                       key={appointment.id}
                       className="border-l-4 border-l-primary"
                     >
-                      <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center gap-4 w-full">
-                        {/* Avatar + Info */}
-                        <div className="flex items-center gap-4 w-full sm:flex-1">
-                          <Avatar className="h-12 w-12 flex-shrink-0">
-                            <AvatarImage
-                              src={
-                                role === "patient"
-                                  ? appointment.doctor?.imageUrl
-                                  : appointment.Patient?.imageUrl
-                              }
-                            />
-                            <AvatarFallback>
-                              {(role === "patient"
-                                ? appointment.doctor?.name
-                                : appointment.Patient?.name
-                              )
-                                ?.split(" ")
-                                .map((n) => n[0])
-                                .join("")}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="flex flex-col space-y-1 truncate w-full">
-                            <h4 className="font-semibold truncate">
-                              {role === "patient"
-                                ? appointment.doctor?.name
-                                : appointment.Patient?.name}
-                            </h4>
-                            {role === "patient" ? (
-                              <p className="text-sm text-muted-foreground truncate">
-                                {appointment.doctor?.specialty?.title}
-                              </p>
-                            ) : (
-                              <>
+                      <CardContent className="p-4">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                          {/* Avatar + Info */}
+                          <div className="flex items-center gap-4 flex-1 min-w-0">
+                            <Avatar className="h-12 w-12 flex-shrink-0">
+                              <AvatarImage
+                                src={
+                                  role === "patient"
+                                    ? appointment.doctor?.imageUrl
+                                    : appointment.Patient?.imageUrl
+                                }
+                              />
+                              <AvatarFallback>
+                                {(role === "patient"
+                                  ? appointment.doctor?.name
+                                  : appointment.Patient?.name
+                                )
+                                  ?.split(" ")
+                                  .map((n) => n[0])
+                                  .join("")}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div className="flex-1 min-w-0 space-y-1">
+                              <h4 className="font-semibold truncate">
+                                {role === "patient"
+                                  ? appointment.doctor?.name
+                                  : appointment.Patient?.name}
+                              </h4>
+                              {role === "patient" ? (
                                 <p className="text-sm text-muted-foreground truncate">
-                                  {appointment.Patient?.email}
+                                  {appointment.doctor?.specialty?.title}
                                 </p>
-                                {appointment.Patient?.phone && (
+                              ) : (
+                                <div className="space-y-2">
                                   <p className="text-sm text-muted-foreground truncate">
-                                    {appointment.Patient.phone}
+                                    {appointment.Patient?.email}
                                   </p>
-                                )}
-                              </>
-                            )}
+                                  {appointment.Patient?.phone && (
+                                    <p className="text-sm text-muted-foreground truncate">
+                                      {appointment.Patient.phone}
+                                    </p>
+                                  )}
+                                </div>
+                              )}
+                            </div>
                           </div>
-                        </div>
 
-                        {/* Appointment Meta */}
-                        <div className="flex flex-col sm:items-start text-sm text-muted-foreground gap-1">
-                          <div className="flex items-center gap-1">
-                            <Calendar className="h-4 w-4" />
-                            <span>
-                              {new Date(appointment.date).toLocaleDateString()}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Clock className="h-4 w-4" />
-                            <span>{appointment.time}</span>
+                          {/* Appointment Meta */}
+                          <div className="flex flex-col gap-2 text-sm text-muted-foreground sm:items-start">
+                            <div className="flex items-center gap-1">
+                              <Calendar className="h-4 w-4" />
+                              <span>
+                                {new Date(
+                                  appointment.date
+                                ).toLocaleDateString()}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Clock className="h-4 w-4" />
+                              <span>{appointment.time}</span>
+                            </div>
                           </div>
                         </div>
                       </CardContent>
@@ -173,6 +177,7 @@ export default function DashboardPage() {
                 </CardContent>
               </Card>
             </TabsContent>
+
             {/* Doctors Tab */}
             {role === "patient" && (
               <TabsContent value="doctors" className="space-y-6">
@@ -186,32 +191,28 @@ export default function DashboardPage() {
                         key={doctor.id}
                         className="border-l-4 border-l-primary"
                       >
-                        <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full">
-                          {/* Avatar + Info */}
-                          <div className="flex items-center gap-4 w-full sm:flex-1">
-                            <Avatar className="h-12 w-12 flex-shrink-0">
-                              <AvatarImage src={doctor.imageUrl} />
-                              <AvatarFallback>
-                                {doctor.name
-                                  .split(" ")
-                                  .map((n) => n[0])
-                                  .join("")}
-                              </AvatarFallback>
-                            </Avatar>
-                            <div className="flex flex-col space-y-1 truncate w-full">
-                              <h4 className="font-semibold truncate">
-                                {doctor.name}
-                              </h4>
-                              <p className="text-sm text-muted-foreground truncate">
-                                {doctor.specialty?.title}
-                              </p>
+                        <CardContent className="p-4">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            {/* Avatar + Info */}
+                            <div className="flex items-center gap-4 flex-1 min-w-0">
+                              <Avatar className="h-12 w-12 flex-shrink-0">
+                                <AvatarImage src={doctor.imageUrl} />
+                                <AvatarFallback>
+                                  {doctor.name
+                                    .split(" ")
+                                    .map((n) => n[0])
+                                    .join("")}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div className="flex-1 min-w-0 space-y-2">
+                                <h4 className="font-semibold truncate">
+                                  {doctor.name}
+                                </h4>
+                                <p className="text-sm text-muted-foreground truncate">
+                                  {doctor.specialty?.title}
+                                </p>
+                              </div>
                             </div>
-                          </div>
-
-                          {/* Optional Meta (empty for now or can add e.g. number of appointments) */}
-                          <div className="flex flex-col sm:items-end text-sm text-muted-foreground gap-1">
-                            {/* Example placeholder */}
-                            <span>&nbsp;</span>
                           </div>
                         </CardContent>
                       </Card>
@@ -234,36 +235,35 @@ export default function DashboardPage() {
                         key={patient.id}
                         className="border-l-4 border-l-primary"
                       >
-                        <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full">
-                          {/* Avatar + Info */}
-                          <div className="flex items-center gap-4 w-full sm:flex-1">
-                            <Avatar className="h-12 w-12 flex-shrink-0">
-                              <AvatarImage src={patient.imageUrl} />
-                              <AvatarFallback>
-                                {patient.name
-                                  .split(" ")
-                                  .map((n) => n[0])
-                                  .join("")}
-                              </AvatarFallback>
-                            </Avatar>
-                            <div className="flex flex-col space-y-1 truncate w-full">
-                              <h4 className="font-semibold truncate">
-                                {patient.name}
-                              </h4>
-                              <p className="text-sm text-muted-foreground truncate">
-                                {patient.email}
-                              </p>
-                              {patient.phone && (
-                                <p className="text-sm text-muted-foreground truncate">
-                                  {patient.phone}
-                                </p>
-                              )}
+                        <CardContent className="p-4">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            {/* Avatar + Info */}
+                            <div className="flex items-center gap-4 flex-1 min-w-0">
+                              <Avatar className="h-12 w-12 flex-shrink-0">
+                                <AvatarImage src={patient.imageUrl} />
+                                <AvatarFallback>
+                                  {patient.name
+                                    .split(" ")
+                                    .map((n) => n[0])
+                                    .join("")}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div className="flex-1 min-w-0 space-y-1">
+                                <h4 className="font-semibold truncate">
+                                  {patient.name}
+                                </h4>
+                                <div className="space-y-2">
+                                  <p className="text-sm text-muted-foreground truncate">
+                                    {patient.email}
+                                  </p>
+                                  {patient.phone && (
+                                    <p className="text-sm text-muted-foreground truncate">
+                                      {patient.phone}
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
                             </div>
-                          </div>
-
-                          {/* Optional Meta (empty for now or any extra info) */}
-                          <div className="flex flex-col sm:items-end text-sm text-muted-foreground gap-1">
-                            <span>&nbsp;</span>
                           </div>
                         </CardContent>
                       </Card>
