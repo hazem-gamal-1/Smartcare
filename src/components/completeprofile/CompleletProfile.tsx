@@ -137,13 +137,11 @@ export default function CompleteProfilePage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             id: user.id,
-            name: formData.name,
-            email: user.emailAddresses[0]?.emailAddress || "",
-            phone: formData.phone,
+            ...formData,
             imageUrl: user.imageUrl || "",
+            email: user.emailAddresses[0]?.emailAddress || "",
           }),
         });
-
 
         if (!res.ok) throw new Error("Failed to create patient");
       }

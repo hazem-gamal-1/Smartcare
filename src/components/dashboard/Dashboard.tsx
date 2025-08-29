@@ -244,7 +244,7 @@ export default function DashboardPage() {
                         className="p-4 flex items-center space-x-4"
                       >
                         <Avatar className="h-12 w-12">
-                          <AvatarImage src={undefined} />
+                          <AvatarImage src={patient.imageUrl} />
                           <AvatarFallback>
                             {patient.name
                               .split(" ")
