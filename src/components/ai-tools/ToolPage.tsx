@@ -9,6 +9,8 @@ import Image from "next/image";
 import ChatBot from "@/components/ai-tools/Chabot";
 import AIDietFitnessPlanner from "./AIDietFitnessPlanner";
 import HeartRiskCalculator from "./HeartRiskCalculator";
+import StressCoach from "./StressCoach";
+import HydrationCoach from "./HydrationCoach";
 
 interface Tool {
   id: string;
@@ -81,7 +83,12 @@ export default function ToolPage() {
   if (tool.title === "AI Heart Health Risk Assessment")
     return <HeartRiskCalculator></HeartRiskCalculator>;
 
-  
+  if (tool.title === " AI Stress & Meditation Coach")
+    return <StressCoach></StressCoach>;
+
+  if (tool.title === "AI Hydration Coach")
+    return <HydrationCoach></HydrationCoach>;
+ 
   return (
     <div className="min-h-screen bg-background py-12">
       <div className="container mx-auto px-4 max-w-4xl">
