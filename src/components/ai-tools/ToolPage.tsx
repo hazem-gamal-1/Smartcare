@@ -8,6 +8,7 @@ import Loader from "@/components/ui/Loader";
 import Image from "next/image";
 import ChatBot from "@/components/ai-tools/Chabot";
 import AIDietFitnessPlanner from "./AIDietFitnessPlanner";
+import HeartRiskCalculator from "./HeartRiskCalculator";
 
 interface Tool {
   id: string;
@@ -22,7 +23,7 @@ interface ClassificationResult {
   confidence: number;
 }
 
-export default function CVToolPage() {
+export default function ToolPage() {
   const { id } = useParams();
   const [tool, setTool] = useState<Tool | null>(null);
   const [loading, setLoading] = useState(true);
@@ -77,6 +78,10 @@ export default function CVToolPage() {
   if (tool.title === "AI Diet & Fitness Planner")
     return <AIDietFitnessPlanner></AIDietFitnessPlanner>;
 
+  if (tool.title === "AI Heart Health Risk Assessment")
+    return <HeartRiskCalculator></HeartRiskCalculator>;
+
+  
   return (
     <div className="min-h-screen bg-background py-12">
       <div className="container mx-auto px-4 max-w-4xl">
