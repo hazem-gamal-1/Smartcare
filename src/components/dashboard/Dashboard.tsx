@@ -35,7 +35,9 @@ interface AppointmentWithRelations {
 
 export default function DashboardPage() {
   const { handleNavigation } = useHandleNavigation();
-  const [appointments, setAppointments] = useState<AppointmentWithRelations[]>([]);
+  const [appointments, setAppointments] = useState<AppointmentWithRelations[]>(
+    []
+  );
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState<"patient" | "doctor">("patient");
   const [allDoctors, setAllDoctors] = useState<DoctorWithSpecialty[]>([]);
@@ -52,8 +54,10 @@ export default function DashboardPage() {
 
         setAppointments(data?.appointments || []);
 
-        if (userRole === "patient" && data?.doctors) setAllDoctors(data.doctors);
-        if (userRole === "doctor" && data?.patients) setAllPatients(data.patients);
+        if (userRole === "patient" && data?.doctors)
+          setAllDoctors(data.doctors);
+        if (userRole === "doctor" && data?.patients)
+          setAllPatients(data.patients);
 
         setLoading(false);
       } catch (error) {
@@ -71,20 +75,28 @@ export default function DashboardPage() {
         {/* LEFT: Tabs Section */}
         <div className="lg:col-span-2">
           <Tabs defaultValue="appointments" className="space-y-6">
-            <TabsList>
+            <TabsList className="overflow-x-auto">
               <TabsTrigger value="appointments">Appointments</TabsTrigger>
-              {role === "patient" && <TabsTrigger value="doctors">All Doctors</TabsTrigger>}
-              {role === "doctor" && <TabsTrigger value="patients">All Patients</TabsTrigger>}
+              {role === "patient" && (
+                <TabsTrigger value="doctors">All Doctors</TabsTrigger>
+              )}
+              {role === "doctor" && (
+                <TabsTrigger value="patients">All Patients</TabsTrigger>
+              )}
             </TabsList>
 
             {/* Appointments Tab */}
             <TabsContent value="appointments" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
+                  <CardTitle className="flex items-center justify-between flex-wrap">
                     <span>Upcoming Appointments</span>
                     {role === "patient" && (
-                      <Button size="sm" onClick={() => handleNavigation("/specialties")}>
+                      <Button
+                        size="sm"
+                        onClick={() => handleNavigation("/specialties")}
+                        className="mt-2 sm:mt-0"
+                      >
                         <Plus className="h-4 w-4 mr-2" />
                         Book New
                       </Button>
@@ -93,16 +105,26 @@ export default function DashboardPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {appointments.map((appointment) => (
-                    <Card key={appointment.id} className="border-l-4 border-l-primary">
-                      <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <Card
+                      key={appointment.id}
+                      className="border-l-4 border-l-primary"
+                    >
+                      <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center gap-4">
                         {/* Avatar + Info */}
                         <div className="flex items-center gap-4 flex-1 min-w-0">
                           <Avatar className="h-12 w-12 flex-shrink-0">
                             <AvatarImage
-                              src={role === "patient" ? appointment.doctor?.imageUrl : appointment.Patient?.imageUrl}
+                              src={
+                                role === "patient"
+                                  ? appointment.doctor?.imageUrl
+                                  : appointment.Patient?.imageUrl
+                              }
                             />
                             <AvatarFallback>
-                              {(role === "patient" ? appointment.doctor?.name : appointment.Patient?.name)
+                              {(role === "patient"
+                                ? appointment.doctor?.name
+                                : appointment.Patient?.name
+                              )
                                 ?.split(" ")
                                 .map((n) => n[0])
                                 .join("")}
@@ -110,7 +132,9 @@ export default function DashboardPage() {
                           </Avatar>
                           <div className="flex flex-col space-y-1 truncate">
                             <h4 className="font-semibold truncate">
-                              {role === "patient" ? appointment.doctor?.name : appointment.Patient?.name}
+                              {role === "patient"
+                                ? appointment.doctor?.name
+                                : appointment.Patient?.name}
                             </h4>
                             {role === "patient" ? (
                               <p className="text-sm text-muted-foreground truncate">
@@ -118,9 +142,13 @@ export default function DashboardPage() {
                               </p>
                             ) : (
                               <>
-                                <p className="text-sm text-muted-foreground truncate">{appointment.Patient?.email}</p>
+                                <p className="text-sm text-muted-foreground truncate">
+                                  {appointment.Patient?.email}
+                                </p>
                                 {appointment.Patient?.phone && (
-                                  <p className="text-sm text-muted-foreground truncate">{appointment.Patient.phone}</p>
+                                  <p className="text-sm text-muted-foreground truncate">
+                                    {appointment.Patient.phone}
+                                  </p>
                                 )}
                               </>
                             )}
@@ -128,10 +156,12 @@ export default function DashboardPage() {
                         </div>
 
                         {/* Appointment Meta */}
-                        <div className="flex flex-col sm:items-end space-y-1 text-sm text-muted-foreground">
+                        <div className="flex flex-col sm:items-end items-center space-y-1 text-sm text-muted-foreground">
                           <div className="flex items-center gap-1">
                             <Calendar className="h-4 w-4" />
-                            <span>{new Date(appointment.date).toLocaleDateString()}</span>
+                            <span>
+                              {new Date(appointment.date).toLocaleDateString()}
+                            </span>
                           </div>
                           <div className="flex items-center gap-1">
                             <Clock className="h-4 w-4" />
@@ -154,16 +184,26 @@ export default function DashboardPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     {allDoctors.map((doctor) => (
-                      <Card key={doctor.id} className="p-4 flex items-center gap-4">
+                      <Card
+                        key={doctor.id}
+                        className="p-4 flex flex-col sm:flex-row sm:items-center gap-4"
+                      >
                         <Avatar className="h-12 w-12 flex-shrink-0">
                           <AvatarImage src={doctor.imageUrl} />
                           <AvatarFallback>
-                            {doctor.name.split(" ").map((n) => n[0]).join("")}
+                            {doctor.name
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")}
                           </AvatarFallback>
                         </Avatar>
-                        <div className="flex flex-col space-y-1 truncate">
-                          <h4 className="font-semibold truncate">{doctor.name}</h4>
-                          <p className="text-sm text-muted-foreground truncate">{doctor.specialty?.title}</p>
+                        <div className="flex flex-col space-y-1 truncate text-center sm:text-left flex-1 min-w-0">
+                          <h4 className="font-semibold truncate">
+                            {doctor.name}
+                          </h4>
+                          <p className="text-sm text-muted-foreground truncate">
+                            {doctor.specialty?.title}
+                          </p>
                         </div>
                       </Card>
                     ))}
@@ -181,16 +221,30 @@ export default function DashboardPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     {allPatients.map((patient) => (
-                      <Card key={patient.id} className="p-4 flex items-center gap-4">
+                      <Card
+                        key={patient.id}
+                        className="p-4 flex flex-col sm:flex-row sm:items-center gap-4"
+                      >
                         <Avatar className="h-12 w-12 flex-shrink-0">
                           <AvatarImage src={patient.imageUrl} />
-                          <AvatarFallback>{patient.name.split(" ").map((n) => n[0]).join("")}</AvatarFallback>
+                          <AvatarFallback>
+                            {patient.name
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")}
+                          </AvatarFallback>
                         </Avatar>
-                        <div className="flex flex-col space-y-1 truncate">
-                          <h4 className="font-semibold truncate">{patient.name}</h4>
-                          <p className="text-sm text-muted-foreground truncate">{patient.email}</p>
+                        <div className="flex flex-col space-y-1 truncate text-center sm:text-left flex-1 min-w-0">
+                          <h4 className="font-semibold truncate">
+                            {patient.name}
+                          </h4>
+                          <p className="text-sm text-muted-foreground truncate">
+                            {patient.email}
+                          </p>
                           {patient.phone && (
-                            <p className="text-sm text-muted-foreground truncate">{patient.phone}</p>
+                            <p className="text-sm text-muted-foreground truncate">
+                              {patient.phone}
+                            </p>
                           )}
                         </div>
                       </Card>
@@ -202,9 +256,9 @@ export default function DashboardPage() {
           </Tabs>
         </div>
 
-        {/* RIGHT: Quick Actions (patients only) */}
+        {/* RIGHT: Quick Actions */}
         {role === "patient" && (
-          <div className="space-y-6">
+          <div className="flex flex-col gap-4">
             <Card
               className="hover:shadow-lg transition-all duration-300 cursor-pointer group"
               onClick={() => handleNavigation("/specialties")}
@@ -214,7 +268,9 @@ export default function DashboardPage() {
                   <Calendar className="h-6 w-6" />
                 </div>
                 <h3 className="font-semibold">Book Appointment</h3>
-                <p className="text-sm text-muted-foreground">Schedule with doctors</p>
+                <p className="text-sm text-muted-foreground">
+                  Schedule with doctors
+                </p>
               </CardContent>
             </Card>
 
@@ -227,7 +283,9 @@ export default function DashboardPage() {
                   <Activity className="h-6 w-6" />
                 </div>
                 <h3 className="font-semibold">AI Health Tools</h3>
-                <p className="text-sm text-muted-foreground">Get instant insights</p>
+                <p className="text-sm text-muted-foreground">
+                  Get instant insights
+                </p>
               </CardContent>
             </Card>
           </div>
