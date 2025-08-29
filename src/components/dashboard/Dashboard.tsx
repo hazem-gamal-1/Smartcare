@@ -129,7 +129,7 @@ export default function DashboardPage() {
                                   .join("")}
                               </AvatarFallback>
                             </Avatar>
-                            <div className="flex-1 min-w-0 space-y-1">
+                            <div className="space-y-1">
                               <h4 className="font-semibold truncate">
                                 {role === "patient"
                                   ? appointment.doctor?.name
@@ -140,7 +140,16 @@ export default function DashboardPage() {
                                   {appointment.doctor?.specialty?.title}
                                 </p>
                               ) : (
-                                <></>
+                                <div className="space-y-1">
+                                  <p className="text-sm text-muted-foreground truncate">
+                                    {appointment.Patient?.email}
+                                  </p>
+                                  {appointment.Patient?.phone && (
+                                    <p className="text-sm text-muted-foreground truncate">
+                                      {appointment.Patient.phone}
+                                    </p>
+                                  )}
+                                </div>
                               )}
                             </div>
                           </div>
