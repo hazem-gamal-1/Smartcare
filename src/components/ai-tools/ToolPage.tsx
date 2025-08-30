@@ -10,6 +10,7 @@ import StressCoach from "./StressCoach";
 import HydrationCoach from "./HydrationCoach";
 import DrugAdvisor from "./DrugAdvisor";
 import CvTool from "./CvTool";
+import RecommendationTool from "./RecommendationTool";
 
 export interface Tool {
   id: string;
@@ -63,5 +64,7 @@ export default function ToolPage() {
 
   if (tool.title === "AI Pharma Assistant") return <DrugAdvisor />;
 
+  if (tool.title === "AI-Powered Doctor & Tool Recommendation Engine")
+    return <RecommendationTool />;
   return <CvTool title={tool.title} description={tool.description} />;
 }

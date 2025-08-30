@@ -4,7 +4,7 @@ export const metadata = {
   title: "ai-tools",
 };
 const page = () => {
-  return <AIToolsPage />;
+  return <AIToolsPage></AIToolsPage>;
 };
 
 export default page;
