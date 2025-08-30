@@ -36,7 +36,12 @@ function SpecialtyCard({
       </div>
 
       {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/50 to-black/20 group-hover:from-black/95 group-hover:via-black/60 transition-all duration-500" />
+      <div
+        className="absolute inset-0 bg-gradient-to-t 
+    from-black/20 via-black/20 to-black/10 
+    group-hover:from-black/60 group-hover:via-black/30 
+    transition-all duration-500"
+      />
 
       {/* Floating elements */}
       <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
