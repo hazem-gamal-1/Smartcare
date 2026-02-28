@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Smartcare 🏥
 
-## Getting Started
+A full-stack healthcare platform that bridges the gap between patients and certified medical professionals through AI-powered health tools, smart appointment management, and role-based dashboards.
 
-First, run the development server:
+**Live Demo:** [https://smartcare-two.vercel.app](https://smartcare-two.vercel.app)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Overview
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Smartcare is built for both patients and doctors. Patients can explore AI health tools for instant insights, browse specialists, and book appointments — all without leaving the platform. Doctors get a dedicated dashboard to manage their appointments and patient records. Access is secured through Clerk authentication, with separate onboarding flows and experiences for each role.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Features
 
-To learn more about Next.js, take a look at the following resources:
+### 🤖 AI Health Tools — powered by Google Gemini 2.5 Flash
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Tool | Description |
+|------|-------------|
+| Health Chatbot | A conversational assistant that answers general health questions and guides users toward appropriate care |
+| Hydration Coach | Calculates a personalized hydration score, daily water goal, and an hourly intake timeline based on activity and climate |
+| Stress Coach | Analyzes stress levels, sleep, and lifestyle to recommend breathing exercises, mindfulness techniques, and daily habits |
+| Heart Risk Analyzer | Evaluates cardiovascular risk using health metrics and lifestyle data, returning a risk score with a personalized action plan |
+| Drug Advisor | Reviews medications for interactions, provides correct dosage guidance, side effect awareness, and monitoring advice |
+| Diet & Fitness Planner | Generates a weekly meal and workout plan tailored to the user's body stats, goals, and activity level |
+| Recommendation Engine | Matches users to the most relevant doctors and AI tools based on a free-text description of their health concern |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 🏥 Platform
 
-## Deploy on Vercel
+- **Role-based onboarding** — Separate sign-up flows for patients and doctors, with profile completion required before accessing the platform.
+- **Doctor discovery** — Browse and filter doctors by medical specialty and view their full profiles.
+- **Appointment management** — Book, view, and track appointments with full history for both patients and doctors.
+- **Dual dashboards** — Each role gets a tailored dashboard that surfaces the most relevant information and actions.
+- **Light and dark mode** — Theme preference toggled from the nav bar and persisted across sessions.
+- **Fully responsive** — Adaptive layouts across mobile, tablet, and desktop with a collapsible mobile menu.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Tech Stack ⚙️
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 14 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS, shadcn/ui |
+| Auth | Clerk |
+| Database ORM | Prisma |
+| AI | Google Gemini (`@google/generative-ai`) |
+| State Management | Zustand |
+| Animations | Framer Motion |
