@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     const doctorList = doctors.map((d) => JSON.stringify(d)).join("\n");
     const toolList = tools.map((t) => JSON.stringify(t)).join("\n");
 
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const prompt = `
 You are an AI assistant helping users find relevant doctors and AI tools based on their description.
